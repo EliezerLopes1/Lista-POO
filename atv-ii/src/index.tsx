@@ -1,17 +1,21 @@
+// import Roteador from './componentes/roteador';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import Roteador from './componentes/roteador';
+import { Rotas } from './routes/rotas';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
+import BarraNavegacao from './componentes/barraNavegacao';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <Roteador />
+    {/* <Roteador /> */}
+    <BarraNavegacao tema="#00ced1"/>
+    <Rotas />
   </React.StrictMode>
 );
 
