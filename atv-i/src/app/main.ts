@@ -29,31 +29,52 @@ let execucao = true
 
 while (execucao) {
     console.log(`Opções:`);
-    console.log(`\n1 - Cadastrar cliente`);
+    console.log('\nCadastro de cliente')
+    console.log('===============================================')
+    console.log(`1 - Cadastrar cliente`);
     console.log(`2 - Listar todos os clientes`);
     console.log(`3 - Editar um cliente`);
-
     console.log(`4 - Excluir um cliente`);
+    console.log('===============================================')
+
+    console.log('\nCadastro de produtos')
+    console.log('===============================================')
     console.log(`5 - Cadastrar produto`);
     console.log(`6 - Listar todos os produtos`);
     console.log(`7 - Editar um produto`);
     console.log(`8 - Excluir um produto`);
+    console.log('===============================================')
+
+    console.log('\nCadastro de serviços')
+    console.log('===============================================')
     console.log(`9 - Cadastrar serviço`);
     console.log(`10 - Listar todos os serviços`);
     console.log(`11 - Editar um serviço`);
     console.log(`12 - Excluir um serviço`);
+    console.log('===============================================')
 
+    console.log('\nCadastros complementares')
+    console.log('===============================================')
     console.log('13 - Adicionar pet')
     console.log(`14 - Editar pet`);
     console.log('15 - Adicionar RG')
     console.log('16 - Adicionar telefone')
+    console.log('===============================================')
 
+    console.log('\nAções')
+    console.log('===============================================')
     console.log('17 - Consumir produto')
     console.log('18 - Atribuir serviço')
+    console.log('===============================================')
+
+    console.log('\nListagens')
+    console.log('===============================================')
     console.log('19 - Lista dos produtos / serviços mais consumidos')
     console.log('20 - Listar Top 5 clientes que mais consumiram produtos / serviços em valor')
     console.log('21 - Listar Top 10 clientes que mais consumiram produto / serviços em quantidade')
-    console.log(`0 - Sair`);
+    console.log('===============================================')
+
+    console.log(`\n0 - Sair`);
 
     let entrada = new Entrada()
     let opcao = entrada.receberNumero(`\nPor favor, escolha uma opção: `)
@@ -225,6 +246,10 @@ while (execucao) {
             let encontraCliente = new Selecionador(empresa.getClientes)
             let clienteEncontrado = encontraCliente.selecionar(input)
 
+            let inputPet = entrada.receberTexto('Digite o nome do Pet em que usará o produto: ')
+            let selecionarPet = new SelecionadorPet(clienteEncontrado.getPets)
+            let petFiltrado = selecionarPet.selecionar(inputPet)
+
             console.log(`\nNome do cliente selecionado: ${clienteEncontrado.nome}`);
 
             let inputProduto = entrada.receberTexto('Digite o nome do produto que deseja consumir: ')
@@ -232,6 +257,7 @@ while (execucao) {
             let produtoEncontrado = buscaProduto.selecionar(inputProduto)
 
             clienteEncontrado.consumirProduto(produtoEncontrado)
+            petFiltrado.consumirProduto(produtoEncontrado)
             listarProdutosConsumidos(clienteEncontrado)
             break
 
@@ -240,13 +266,18 @@ while (execucao) {
             let encontrarCliente = new Selecionador(empresa.getClientes)
             let cliente_encontrado = encontrarCliente.selecionar(input_cpf)
 
+            let inputPet2 = entrada.receberTexto('Digite o nome do Pet que irá usar o serviço: ')
+            let selecionarPet2 = new SelecionadorPet(cliente_encontrado.getPets)
+            let petFiltrado2 = selecionarPet2.selecionar(inputPet2)
+
             console.log(`\nNome do cliente selecionado: ${cliente_encontrado.nome}`);
 
             let inputServico = entrada.receberTexto('Digite o nome do serviço que deseja atribuir: ')
             let buscaServico = new SelecionadorServico(empresa.getServicos)
             let servicoEncontrado = buscaServico.selecionar(inputServico)
-
+            
             cliente_encontrado.atribuirServico(servicoEncontrado)
+            petFiltrado2.atribuirServico(servicoEncontrado)
             listarServicosAtribuidos(cliente_encontrado)
             break
 

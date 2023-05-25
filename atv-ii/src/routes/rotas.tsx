@@ -14,7 +14,6 @@ export const Rotas = () => {
             <Route path='/cadastro-produto' element={<FormularioCadastroProduto tema="#00ced1"/>} />
             
             <Route path='/' element={<Navigate to={'/home'} />} />
-            <Route path='*' element={<Navigate to={'/'} />} />
         </Routes>
         </BrowserRouter>
     )

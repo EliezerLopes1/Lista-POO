@@ -50,6 +50,8 @@ export default class ListagemClientes extends Listagem {
             console.log(`RGs: ${listaRgs}`)
             console.log(`Telefones: ${listaTelefones}`)
             console.log(`Pets: ${listaPets}`)
+            console.log(cliente.getPets[0].getProdutosConsumidos)
+            console.log(cliente.getPets[0].getServicosConsumidos)
             console.log(`Produtos consumidos: ${listaProdutoConsumidos}`)
             console.log(`Serviços atribuídos: ${listaServicosAtribuidos}`)
             console.log(`Valor gasto: ${totalGasto.toFixed(2)}`)
