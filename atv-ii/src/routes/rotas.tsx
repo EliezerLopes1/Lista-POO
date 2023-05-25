@@ -3,6 +3,11 @@ import ListaCliente from "../componentes/listaClientes";
 import FormularioCadastroCliente from "../componentes/formularioCadastroCliente";
 import FormularioCadastroProduto from "../componentes/formularioCadastroProduto";
 import ListaProdutos from "../componentes/listaProdutos";
+import FormularioCadastroServico from "../componentes/formularioCadastroServico";
+import ListaServicos from "../componentes/listaServicos";
+import AdicionarRG from "../componentes/adicionarRG";
+import AdicionarTelefone from "../componentes/adicionarTelefone";
+import AdicionarPet from "../componentes/adicionarPet";
 
 export const Rotas = () => {
     return (
@@ -10,9 +15,14 @@ export const Rotas = () => {
         <Routes>
             <Route path='/lista-clientes' element={<ListaCliente tema="#00ced1"/>} />
             <Route path='/lista-produtos' element={<ListaProdutos tema="#00ced1"/>} />
+            <Route path='/lista-servicos' element={<ListaServicos tema="#00ced1"/>} />
             <Route path='/cadastro-cliente' element={<FormularioCadastroCliente tema="#00ced1"/>} />
             <Route path='/cadastro-produto' element={<FormularioCadastroProduto tema="#00ced1"/>} />
-            
+            <Route path='/cadastro-servico' element={<FormularioCadastroServico tema="#00ced1"/>} />
+
+            <Route path='/adicionar-rg' element={<AdicionarRG tema="#00ced1"/>} />
+            <Route path='/adicionar-telefone' element={<AdicionarTelefone tema="#00ced1"/>} />
+            <Route path='/adicionar-pet' element={<AdicionarPet tema="#00ced1"/>} />
             <Route path='/' element={<Navigate to={'/home'} />} />
         </Routes>
         </BrowserRouter>

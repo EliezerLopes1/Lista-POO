@@ -23,7 +23,7 @@ export default class BarraNavegacao extends Component<props>{
                             <img className="logo-img" src={logo}/>
                         </div>
                         <div className="logo-nome">
-                            <Navbar.Brand href="#home">
+                            <Navbar.Brand href="/home">
                                 PetLovers
                             </Navbar.Brand> 
                         </div>
@@ -42,10 +42,15 @@ export default class BarraNavegacao extends Component<props>{
                                     <NavDropdown.Item href="/lista-produtos">Listar todos os produtos</NavDropdown.Item>
                                 </NavDropdown>
 
+                                <NavDropdown title="Serviços" id="basic-nav-dropdown">
+                                    <NavDropdown.Item href="/cadastro-servico">Cadastro de serviços</NavDropdown.Item>
+                                    <NavDropdown.Item href="/lista-servicos">Listar todos os serviços</NavDropdown.Item>
+                                </NavDropdown>
+
                                 <NavDropdown title="Cadastros adicionais" id="basic-nav-dropdown">
-                                    <NavDropdown.Item href="/">Adicionar um RG</NavDropdown.Item>
-                                    <NavDropdown.Item href="/">Adicionar um telefone</NavDropdown.Item>
-                                    <NavDropdown.Item href="/">Adicionar um Pet</NavDropdown.Item>
+                                    <NavDropdown.Item href="/adicionar-rg">Adicionar um RG</NavDropdown.Item>
+                                    <NavDropdown.Item href="/adicionar-telefone">Adicionar um telefone</NavDropdown.Item>
+                                    <NavDropdown.Item href="/adicionar-pet">Adicionar um Pet</NavDropdown.Item>
                                 </NavDropdown>
 
                                 <Nav.Link href="/home">Dashboard</Nav.Link>
