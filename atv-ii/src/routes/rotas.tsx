@@ -8,11 +8,14 @@ import ListaServicos from "../componentes/listaServicos";
 import AdicionarRG from "../componentes/adicionarRG";
 import AdicionarTelefone from "../componentes/adicionarTelefone";
 import AdicionarPet from "../componentes/adicionarPet";
+import { Carrosel, Intro } from "../componentes/home";
+import Inicio from "../componentes/paginaInicial";
 
 export const Rotas = () => {
     return (
         <BrowserRouter>
         <Routes>
+            <Route path='/home' element={<Inicio />} />
             <Route path='/lista-clientes' element={<ListaCliente tema="#00ced1"/>} />
             <Route path='/lista-produtos' element={<ListaProdutos tema="#00ced1"/>} />
             <Route path='/lista-servicos' element={<ListaServicos tema="#00ced1"/>} />
