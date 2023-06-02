@@ -1,5 +1,5 @@
 import { Component } from "react";
-import "./listaCliente.css"
+import "./margin.css"
 
 type props = {
     tema: string

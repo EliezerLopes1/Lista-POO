@@ -53,7 +53,7 @@ export default class BarraNavegacao extends Component<props>{
                                     <NavDropdown.Item href="/adicionar-pet">Adicionar um Pet</NavDropdown.Item>
                                 </NavDropdown>
 
-                                <Nav.Link href="/home">Dashboard</Nav.Link>
+                                <Nav.Link href="/dashboard">Dashboard</Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
                     </Container>

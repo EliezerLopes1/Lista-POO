@@ -10,6 +10,7 @@ import AdicionarTelefone from "../componentes/adicionarTelefone";
 import AdicionarPet from "../componentes/adicionarPet";
 import { Carrosel, Intro } from "../componentes/home";
 import Inicio from "../componentes/paginaInicial";
+import Dashboard from "../componentes/dashboard";
 
 export const Rotas = () => {
     return (
@@ -26,6 +27,8 @@ export const Rotas = () => {
             <Route path='/adicionar-rg' element={<AdicionarRG tema="#00ced1"/>} />
             <Route path='/adicionar-telefone' element={<AdicionarTelefone tema="#00ced1"/>} />
             <Route path='/adicionar-pet' element={<AdicionarPet tema="#00ced1"/>} />
+
+            <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/' element={<Navigate to={'/home'} />} />
         </Routes>
         </BrowserRouter>
