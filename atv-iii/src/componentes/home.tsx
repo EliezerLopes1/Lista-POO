@@ -2,8 +2,8 @@ import Carousel from 'react-bootstrap/Carousel';
 import { Component } from "react";
 import "./home.css"
 
-export class Carrosel extends Component {
-    render() {
+export function Carrosel () {
+
         return (
             <>
                 <Carousel className='tamanho-imagem'>
@@ -32,10 +32,10 @@ export class Carrosel extends Component {
             </>
         );
     }
-}
 
-export class Intro extends Component {
-    render() {
+
+export function Intro () {
+
         return (
             <>
                 {/* <div className='texto1'>
@@ -107,4 +107,3 @@ export class Intro extends Component {
             </>
         )
     }
-}

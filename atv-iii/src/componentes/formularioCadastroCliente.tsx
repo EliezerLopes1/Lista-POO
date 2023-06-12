@@ -5,10 +5,9 @@ type props = {
     tema: string
 }
 
-export default class FormularioCadastroCliente extends Component<props> {
+function FormularioCadastroCliente(props: { tema: any; }) {
+    const tema = props.tema;
 
-    render() {
-        let tema = this.props.tema
         return (
             <div className="container-fluid">
                 <form>
@@ -55,10 +54,12 @@ export default class FormularioCadastroCliente extends Component<props> {
                         <div className="input-group mb-3">
                             <input type="text" className="form-control" placeholder="Gênero do Pet" aria-label="Gênero do Pet" aria-describedby="basic-addon1" />
                         </div>
-                        {/* <div className="input-group mb-3">
+
+                        {/*linha 57 <div className="input-group mb-3">
                         <span className="input-group-text" id="basic-addon1" style={{ background: tema }}>@</span>
                         <input type="email" className="form-control" placeholder="E-mail" aria-label="E-mail" aria-describedby="basic-addon1" />
                     </div> */}
+                    
                         <div className="input-group mb-3">
                             <button className="btn btn-outline-secondary" type="button" style={{ background: tema }}>Cadastrar</button>
                         </div>
@@ -67,4 +68,5 @@ export default class FormularioCadastroCliente extends Component<props> {
             </div>
         )
     }
-}
+
+export default FormularioCadastroCliente;
