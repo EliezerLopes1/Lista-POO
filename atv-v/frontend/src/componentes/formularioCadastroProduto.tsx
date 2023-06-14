@@ -3,11 +3,6 @@ import "./margin.css"
 import Swal from "sweetalert2"
 import Axios from 'axios'
 
-
-// type props = {
-//     tema: string
-// }
-
 function FormularioCadastroProduto(props: { tema: any; }) {
     const tema = props.tema;
 
@@ -19,6 +14,18 @@ function FormularioCadastroProduto(props: { tema: any; }) {
       setPreco("")
     };
 
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+    
     const cadastrar = (event: any) => {
       event.preventDefault()
       
@@ -27,11 +34,9 @@ function FormularioCadastroProduto(props: { tema: any; }) {
         produtoPreco: preco
       }).then((response) => {
         if (response.data.msg !== " ") {
-          Swal.fire({
-            title: 'Sucesso',
-            html: response.data.msg,
+          Toast.fire({
             icon: 'success',
-            confirmButtonColor: '#00ced1'
+            title: response.data.msg
           })
           limparCampos()
         }
