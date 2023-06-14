@@ -24,9 +24,9 @@ app.post('/cadastrar-cliente', (req, res) => {
     const { cpf, cpfDataEmissao }   = req.body
     const { rg, rgDataEmissao }     = req.body
     
-
-    const { petNome, petTipo, petRaca, petGenero } = req.body
-
+    const { telefoneDDD, telefoneNumero }           = req.body
+    const { petNome, petTipo, petRaca, petGenero }  = req.body
+    
     let SQL = "INSERT INTO cliente (ClienteNome, ClienteNomeSocial, ClienteCPF, ClienteCPFDataEmissao, ClienteRG, ClienteRGDataEmissao) VALUES ($1, $2, $3, $4, $5, $6) RETURNING ClienteID"
 
     DB.query(SQL, [nome, nomeSocial, cpf, cpfDataEmissao, rg, rgDataEmissao], (err, result) => {
@@ -36,9 +36,11 @@ app.post('/cadastrar-cliente', (req, res) => {
         } else {
             console.log('inseriu')
             const clienteID = result.rows[0].ClienteID
-
+            
             if (clienteID) {
                 let SQL2 = "INSERT INTO Pets (ClienteID, PetNome, PetRaca, PetTipo, PetGenero) VALUES ($1, $2, $3, $4, $5)"
+                
+                let SQL3 = "INSERT INTO ClienteTelefone (ClienteID, TelefoneDDD, TelefoneNumero) VALUES ($1, $2, $3)"
 
                 DB.query(SQL2, [clienteID, petNome, petRaca, petTipo, petGenero], (err, result) => {
                     if (err) {
@@ -47,7 +49,19 @@ app.post('/cadastrar-cliente', (req, res) => {
                         console.log('inseriu pet tbm')
                     }
                 })
+
+                DB.query(SQL3, [clienteID, telefoneDDD, telefoneNumero], (err, result) => {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        console.log('inseriu telefone tbm')
+                    }
+                })
+
+                
             }
+
+            res.send({msg: "Cliente inserido com sucesso."})
         }
     })
 })
