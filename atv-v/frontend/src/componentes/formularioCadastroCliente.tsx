@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./margin.css"
 import Axios from 'axios'
-import Swal from 'sweetalert2'
+import { MyToast } from "../alertas/swal-mixin";
 
 function FormularioCadastroCliente(props: { tema: any; }) {
     const tema = props.tema;
@@ -20,18 +20,6 @@ function FormularioCadastroCliente(props: { tema: any; }) {
     const [petTipo, setPetTipo]     = useState("" as any)
     const [petRaca, setPetRaca]     = useState("" as any)
     const [petGenero, setPetGenero] = useState("" as any)
-    
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    })
 
     const cadastrar = async (event: any) => {
         event.preventDefault()
@@ -51,7 +39,7 @@ function FormularioCadastroCliente(props: { tema: any; }) {
             petGenero: petGenero
         }).then((response) =>{
             if (response.data.msg !== " ") {
-                Toast.fire({
+                MyToast.fire({
                     icon: 'success',
                     title: response.data.msg
                 })

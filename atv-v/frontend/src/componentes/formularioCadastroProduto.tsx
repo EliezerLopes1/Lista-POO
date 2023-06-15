@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./margin.css"
-import Swal from "sweetalert2"
+import { MyToast } from "../alertas/swal-mixin";
 import Axios from 'axios'
 
 function FormularioCadastroProduto(props: { tema: any; }) {
@@ -13,18 +13,6 @@ function FormularioCadastroProduto(props: { tema: any; }) {
       setNome("")
       setPreco("")
     };
-
-    const Toast = Swal.mixin({
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-      }
-    })
     
     const cadastrar = (event: any) => {
       event.preventDefault()
@@ -34,7 +22,7 @@ function FormularioCadastroProduto(props: { tema: any; }) {
         produtoPreco: preco
       }).then((response) => {
         if (response.data.msg !== " ") {
-          Toast.fire({
+          MyToast.fire({
             icon: 'success',
             title: response.data.msg
           })
