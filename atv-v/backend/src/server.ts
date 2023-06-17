@@ -419,6 +419,36 @@ app.get("/listar-rgs/:ID", (req, res) => {
 
 //EDITS
 
+app.put('/editar-produto/:ID', (req, res) => {
+    const { ID } = req.params 
+    const { produtoNome, produtoPreco } = req.body
+
+    DB.query("UPDATE Produto SET ProdutoNome = $1, ProdutoPreco = $2 WHERE ProdutoID = $3", [produtoNome, produtoPreco, ID], (err, result) => {
+        if (err) {
+            console.log(err)
+            res.send({erro: "Erro ao editar Produto."})
+        } else {
+            console.log('atualizou Produto')
+            res.send({msg: "Produto editado com sucesso.", status: 'OK'})
+        }
+    })
+})
+
+app.put('/editar-servico/:ID', (req, res) => {
+    const { ID } = req.params 
+    const { servicoNome, servicoPreco } = req.body
+
+    DB.query("UPDATE Servico SET ServicoNome = $1, ServicoPreco = $2 WHERE ServicoID = $3", [servicoNome, servicoPreco, ID], (err, result) => {
+        if (err) {
+            console.log(err)
+            res.send({erro: "Erro ao editar Serviço."})
+        } else {
+            console.log('atualizou serviço')
+            res.send({msg: "Serviço editado com sucesso.", status: 'OK'})
+        }
+    })
+})
+
 app.put('/editar-pet/:ID', (req, res) => {
     const { ID } = req.params 
     const { petNome, petRaca, petTipo, petGenero } = req.body

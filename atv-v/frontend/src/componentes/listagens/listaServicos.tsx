@@ -4,32 +4,48 @@ import "../margin.css"
 import Axios from 'axios'
 
 function ListaServicos() {
-    interface Servicos {
-      servicoid: string,
-      serviconome: string,
-      servicopreco: number
-    }
-  
-    const [servicos, setServicos] = useState<Servicos[]>([] as any);
-    
-    const listarServicos = () => {
-      Axios.get("http://localhost:3001/listar-servicos")
-        .then((response) => {
-          setServicos(response.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    };
-  
-    useEffect(() => {
-      listarServicos();
-    }, []);
+  interface Servicos {
+    servicoid: string,
+    serviconome: string,
+    servicopreco: number
+  }
 
-    return (
-      <div className="container-fluid">
-        <div className="list-group">
-          <div className="margin-lista">
+  const [servicos, setServicos] = useState<Servicos[]>([] as any);
+
+  const listarServicos = () => {
+    Axios.get("http://localhost:3001/listar-servicos")
+      .then((response) => {
+        setServicos(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const enviarDadosServico = (servico: Servicos) => {
+    const id = servico.servicoid
+    const nome = servico.serviconome
+    const preco = servico.servicopreco
+
+
+    const data = {
+      id: id,
+      nome: nome,
+      preco: preco
+    }
+
+    localStorage.setItem('id_servico', data.id)
+    localStorage.setItem('dados_servico', JSON.stringify(data))
+  }
+
+  useEffect(() => {
+    listarServicos();
+  }, []);
+
+  return (
+    <div className="container-fluid">
+      <div className="list-group">
+        <div className="margin-lista">
           <h2 style={{ textAlign: "center" }}>Lista de Serviços</h2>
           <table className="table table-hover table-bordered mt-5">
             <thead>
@@ -40,7 +56,10 @@ function ListaServicos() {
             </thead>
             <tbody className="table-group-divider">
               {servicos.map((servico) => (
-                <tr key={servico.servicoid} className="item-hover">
+                <tr key={servico.servicoid} className="item-hover" onClick={() => {
+                  enviarDadosServico(servico)
+                  Navigate('/editar-servico')
+                }}>
 
                   <td>{servico.serviconome}</td>
                   <td>{servico.servicopreco}</td>
@@ -49,10 +68,10 @@ function ListaServicos() {
               ))}
             </tbody>
           </table>
-          </div>
         </div>
       </div>
-    );
-  }
-  
-  export default ListaServicos;
+    </div>
+  );
+}
+
+export default ListaServicos;
