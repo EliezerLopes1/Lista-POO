@@ -106,7 +106,6 @@ while (execucao) {
             let cpf = entrada.receberTexto('Digite um CPF para exclusão: ')
             let selecionadorCliente = new Selecionador(empresa.getClientes)
             let cliente = selecionadorCliente.selecionar(cpf)
-            // console.log(cliente)
 
             console.log(`Nome do cliente selecionado: ${cliente.nome}`);
 
@@ -195,7 +194,6 @@ while (execucao) {
             cadastrarPet(clienteSelecionado)
 
             console.log(`\nPet adicionado com sucesso ao cliente ${clienteSelecionado.nome}.`)
-            console.log(clienteSelecionado.getPets)
             break
 
         case 14:
@@ -225,7 +223,6 @@ while (execucao) {
             cadastrarRG(clienteSelecionadoRG)
 
             console.log(`\nRG adicionado com sucesso ao cliente ${clienteSelecionadoRG.nome}.`)
-            console.log(clienteSelecionadoRG.getRgs)
             break
 
         case 16:
