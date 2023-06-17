@@ -45,7 +45,7 @@ function FormularioCadastroProduto(props: { tema: any; }) {
               <span className="input-group-text" id="basic-addon1" style={{ background: tema }}>R$</span>
               <input type="number" className="form-control" name="produtoPreco" value={preco}placeholder="Preço" aria-label="E-mail" aria-describedby="basic-addon1" onChange={(e) => setPreco(e.target.value)} />
             </div>
-            <div className="input-group mb-3">
+            <div className="d-flex justify-content-center input-group mb-3">
               <button className="btn btn-outline-secondary" type="button" style={{ background: tema }} onClick={cadastrar}>Cadastrar</button>
             </div>
           </div>

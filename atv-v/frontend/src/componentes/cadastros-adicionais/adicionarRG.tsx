@@ -56,7 +56,7 @@ function AdicionarRG(props: { tema: any; }) {
             <span className="input-group-text" id="basic-addon1" style={{ background: tema }}>dd/mm/yyyy</span>
             <input type="text" className="form-control" name="rgData" value={rgData} placeholder="Data de emissão do RG" aria-label="Data de emissão do RG" aria-describedby="basic-addon1" onChange={(e) => setRgData(e.target.value)}/>
           </div>
-          <div className="input-group mb-3">
+          <div className="d-flex justify-content-center input-group mb-3">
             <button className="btn btn-outline-secondary" type="button" style={{ background: tema }} onClick={addRG}>Cadastrar</button>
           </div>
         </div>

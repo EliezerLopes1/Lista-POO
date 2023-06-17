@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../margin.css"
 import Axios from 'axios'
 import { MyToast } from "../../alertas/swal-mixin";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 
 function EditarTelefone(props: { tema: any; }) {
@@ -12,19 +13,41 @@ function EditarTelefone(props: { tema: any; }) {
   const [DDD, setDDD] = useState("" as any)
   const [numero, setNumero] = useState("" as any)
 
+  const dadosJson = localStorage.getItem('dados_telefone')
+  const clienteID = localStorage.getItem('id')
+
+  useEffect(() => {
+    if (dadosJson) {
+      try {
+        const dadosObj = JSON.parse(dadosJson)
+
+        setDDD(dadosObj.ddd)
+        setNumero(dadosObj.numero)
+
+      } catch (erro) {
+        console.log(erro)
+      }
+    }
+  }, [])
+
   const editar = async (event: any) => {
     event.preventDefault()
 
-    await Axios.post("http://localhost:3001/editar-telefone", {
+    await Axios.put(`http://localhost:3001/editar-telefone/${clienteID}`, {
       telefoneDDD: DDD,
       telefoneNumero: numero
     }).then((response) => {
-      if (response.data.msg !== " ") {
+      if (response.data.status === "OK") {
+        navigate('/lista-telefones')
+
         MyToast.fire({
           icon: 'success',
-          title: 'Sucesso',
-          html: response.data.msg,
+          title: response.data.msg
         })
+      }
+
+      if (response.data.status !== "OK") {
+        Swal.fire("ERRO", response.data.erro, "error")
       }
     })
   }
@@ -43,10 +66,14 @@ function EditarTelefone(props: { tema: any; }) {
           <div className="input-group mb-3">
             <input type="text" className="form-control" name="numero" value={numero} placeholder="Telefone" aria-label="Telefone" aria-describedby="basic-addon1" onChange={(e) => setNumero(e.target.value)} />
           </div>
-          <div className="input-group mb-3">
-            <button className="btn btn-secondary" type="button" onClick={() => navigate('/lista-clientes')}>Voltar</button>
-            <button className="btn btn-outline-secondary" type="button" style={{ background: tema }} onClick={editar}>Cadastrar</button>
+
+          <div className="d-flex justify-content-center input-group mb-3">
+            <button className="btn btn-secondary" type="button" onClick={() => navigate('/lista-telefones')}>Voltar</button>
+            <button className="btn btn-outline-secondary" type="button" style={{ background: tema }} onClick={editar}>Editar</button>
+            <button className="btn btn-danger" type="button" onClick={editar}>Excluir</button>
           </div>
+
+
         </div>
       </form>
     </div>

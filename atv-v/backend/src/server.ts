@@ -96,38 +96,6 @@ app.post('/editar-cliente/:ID', (req, res) => {
             console.log(err)
             res.send(err)
         } else {
-
-            // let SQL2 = "UPDATE Pets SET PetNome = $1, PetRaca = $2, PetTipo = $3, PetGenero = $4) WHERE ClienteID = $5"
-
-            // let SQL3 = "UPDATE ClienteTelefone SET TelefoneDDD = $1, TelefoneNumero = $2 WHERE ClienteID = $3"
-
-            // let SQL4 = "UPDATE ClienteRG SET RGNumero = $1, RGDataEmissao = $2 WHERE ClienteID = $3"
-
-            // DB.query(SQL2, [petNome, petRaca, petTipo, petGenero, ID], (err, result) => {
-            //     if (err) {
-            //         console.log(err)
-            //     } else {
-            //         console.log('atualizou pet tbm')
-            //     }
-            // })
-
-            // DB.query(SQL3, [telefoneDDD, telefoneNumero, ID], (err, result) => {
-            //     if (err) {
-            //         console.log(err)
-            //     } else {
-            //         console.log('atualizou telefone tbm')
-            //     }
-            // })
-
-            // DB.query(SQL4, [rg, rgDataEmissao, ID], (err, result) => {
-            //     if (err) {
-            //         console.log(err)
-            //     } else {
-            //         console.log('atualizou RG tbm')
-            //     }
-            // })
-        
-
             res.send({ msg: "Cliente editado com sucesso." })
         }
     })
@@ -353,7 +321,7 @@ app.post("/consumir-servicos", (req, res) => {
     })
 })
 
-app.post("/insere-valor-gasto")
+
 //LISTAGENS
 
 app.get('/listar-clientes', (req, res) => {
@@ -448,6 +416,55 @@ app.get("/listar-rgs/:ID", (req, res) => {
     })
 })
 
+
+//EDITS
+
+app.put('/editar-pet/:ID', (req, res) => {
+    const { ID } = req.params 
+    const { petNome, petRaca, petTipo, petGenero } = req.body
+
+    DB.query("UPDATE Pets SET PetNome = $1, PetRaca = $2, PetTipo = $3, PetGenero = $4 WHERE ClienteID = $5", [petNome, petRaca, petTipo, petGenero, ID], (err, result) => {
+        if (err) {
+            console.log(err)
+            res.send({erro: "Erro ao editar Pet."})
+        } else {
+            console.log('editado pet')
+            res.send({msg: "Pet editado com sucesso.", status: 'OK'})
+        }
+    })
+})
+
+app.put('/editar-telefone/:ID', (req, res) => {
+    const { ID } = req.params 
+    const { telefoneDDD } = req.body
+    const { telefoneNumero } = req.body 
+
+    DB.query("UPDATE ClienteTelefone SET TelefoneDDD = $1, TelefoneNumero = $2 WHERE ClienteID = $3", [telefoneDDD, telefoneNumero, ID], (err, result) => {
+        if (err) {
+            console.log(err)
+            res.send({erro: "Erro ao editar Telefone."})
+        } else {
+            console.log('atualizou telefone tbm')
+            res.send({msg: "Telefone editado com sucesso.", status: 'OK'})
+        }
+    })
+})
+
+app.put('/editar-rg/:ID', (req, res) => {
+    const { ID } = req.params 
+    const { rg, rgDataEmissao } = req.body
+
+    DB.query("UPDATE ClienteRG SET RGNumero = $1, RGDataEmissao = $2 WHERE ClienteID = $3", [rg, rgDataEmissao, ID], (err, result) => {
+        if (err) {
+            console.log(err)
+            res.send({erro: "Erro ao editar RG."})
+        } else {
+            console.log('atualizou RG')
+            res.send({msg: "RG editado com sucesso.", status: 'OK'})
+        }
+    })
+})
+     
 //DELETES
 
 app.delete("/excluirCliente/:cpf", (req, res) => {

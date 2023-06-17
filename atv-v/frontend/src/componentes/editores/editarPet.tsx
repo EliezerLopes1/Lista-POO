@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../margin.css"
 import Axios from 'axios'
 import { MyToast } from "../../alertas/swal-mixin";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function EditarPet(props: { tema: any; }) {
   const tema = props.tema;
@@ -14,22 +15,45 @@ function EditarPet(props: { tema: any; }) {
   const [petRaca, setPetRaca] = useState("" as any)
   const [petGenero, setPetGenero] = useState("" as any)
 
-  const clienteID = localStorage.getItem('key_cliente')
+  const dadosJson = localStorage.getItem('dados_pet')
+  const clienteID = localStorage.getItem('cliente_id')
+
+  useEffect(() => {
+    if (dadosJson) {
+      try {
+        const dadosObj = JSON.parse(dadosJson)
+
+        setPetNome(dadosObj.nome)
+        setPetTipo(dadosObj.tipo)
+        setPetRaca(dadosObj.raca)
+        setPetGenero(dadosObj.genero)
+
+      } catch (erro) {
+        console.log(erro)
+      }
+    }
+  }, [])
 
   const editar = async (event: any) => {
     event.preventDefault()
 
-    await Axios.put(`http://localhost:3001/editar-pet/:${clienteID}`, {
+    await Axios.put(`http://localhost:3001/editar-pet/${clienteID}`, {
       petNome: petNome,
       petTipo: petTipo,
       petRaca: petRaca,
       petGenero: petGenero
     }).then((response) => {
-      if (response.data.msg !== " ") {
+      if (response.data.status === "OK") {
+        navigate('/lista-pets')
+
         MyToast.fire({
           icon: 'success',
           title: response.data.msg
         })
+      }
+
+      if (response.data.status !== "OK") {
+        Swal.fire("ERRO", response.data.erro, "error")
       }
     })
   }
@@ -53,9 +77,10 @@ function EditarPet(props: { tema: any; }) {
           <div className="input-group mb-3">
             <input type="text" className="form-control" name="petGenero" value={petGenero} placeholder="Gênero do Pet" aria-label="Gênero do Pet" aria-describedby="basic-addon1" onChange={(e) => setPetGenero(e.target.value)} />
           </div>
-          <div className="input-group mb-3">
-            <button className="btn btn-secondary" type="button" onClick={() => navigate('/lista-clientes')}>Voltar</button>
-            <button className="btn btn-outline-secondary" type="button" style={{ background: tema }} onClick={editar}>Cadastrar</button>
+          <div className="d-flex justify-content-center input-group mb-3">
+            <button className="btn btn-secondary" type="button" onClick={() => navigate('/lista-pets')}>Voltar</button>
+            <button className="btn btn-outline-secondary" type="button" style={{ background: tema }} onClick={editar}>Editar</button>
+            <button className="btn btn-danger" type="button" onClick={editar}>Excluir</button>
           </div>
         </div>
       </form>

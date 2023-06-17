@@ -104,9 +104,9 @@ function ListaCliente() {
 
 
           <div className="btn-group mr-3" role="group">
-            <button className="btn btn-success" onClick={() => enviarDados1(clienteSelecionado?.clienteid)}>Ver / Editar Pets</button>
-            <button className="btn btn-info" onClick={() => enviarDados2(clienteSelecionado?.clienteid)}>Ver / Editar Telefones</button>
-            <button className="btn btn-warning" onClick={() => enviarDados3(clienteSelecionado?.clienteid)}>Ver / Editar RGs</button>
+            <button className="btn btn-success" onClick={() => enviarDados1(clienteSelecionado?.clienteid)}>Ver Pets</button>
+            <button className="btn btn-info" onClick={() => enviarDados2(clienteSelecionado?.clienteid)}>Ver Telefones</button>
+            <button className="btn btn-warning" onClick={() => enviarDados3(clienteSelecionado?.clienteid)}>Ver RGs</button>
           </div>
 
 

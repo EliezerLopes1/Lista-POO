@@ -94,12 +94,7 @@ function FormularioCadastroCliente(props: { tema: any; }) {
                         <input type="text" className="form-control" name="petGenero" value={petGenero} placeholder="Gênero do Pet" aria-label="Gênero do Pet" aria-describedby="basic-addon1" onChange={(e) => setPetGenero(e.target.value)}/>
                     </div>
 
-                    {/*linha 57 <div className="input-group mb-3">
-                        <span className="input-group-text" id="basic-addon1" style={{ background: tema }}>@</span>
-                        <input type="email" className="form-control" placeholder="E-mail" aria-label="E-mail" aria-describedby="basic-addon1" />
-                    </div> */}
-
-                    <div className="input-group mb-3">
+                    <div className="d-flex justify-content-center input-group mb-3">
                         <button className="btn btn-outline-secondary" type="button" style={{ background: tema }} onClick={cadastrar}>Cadastrar</button>
                     </div>
                 </div>

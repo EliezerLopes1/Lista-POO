@@ -57,7 +57,7 @@ function AdicionarTelefone(props: { tema: any; }) {
           <div className="input-group mb-3">
             <input type="text" className="form-control" name="numero" value={numero} placeholder="Telefone" aria-label="Telefone" aria-describedby="basic-addon1" onChange={(e) => setNumero(e.target.value)} />
           </div>
-          <div className="input-group mb-3">
+          <div className="d-flex justify-content-center input-group mb-3">
             <button className="btn btn-outline-secondary" type="button" style={{ background: tema }} onClick={adicionar}>Cadastrar</button>
           </div>
         </div>

@@ -42,6 +42,7 @@ function ListaTelefones() {
             numero: numero
         }
 
+        localStorage.setItem('id', data.IDcliente)
         localStorage.setItem('dados_telefone', JSON.stringify(data))
     }
 
