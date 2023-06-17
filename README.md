@@ -4,6 +4,8 @@
 
 ## Professor Doutor Gerson da Penha Neto
 
+ #OBS: Banco de Dados da lista 5 vai estar tanto no início do repositório, tanto quanto dentro da pasta da Lista 5.
+  
 </div>
 
 # Listas
