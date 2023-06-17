@@ -211,18 +211,18 @@ app.get('/listar-clientes', (req, res) => {
     })
 })
 
-app.get("/buscar-rg/:id", (req, res) => {
-    const { id } = req.params
+// app.get("/buscar-rg/:id", (req, res) => {
+//     const { id } = req.params
 
-    DB.query("SELECT * FROM ClienteRG WHERE ClienteID = $1", [id], (err, result) => {
-        if (err) {
-            console.log(err)
-        } else {
-            console.log('achou')
-            res.send(result.rows)
-        }
-    })
-})
+//     DB.query("SELECT * FROM ClienteRG WHERE ClienteID = $1", [id], (err, result) => {
+//         if (err) {
+//             console.log(err)
+//         } else {
+//             console.log('achou')
+//             res.send(result.rows)
+//         }
+//     })
+// })
 
 app.get("/listar-produtos", (req, res) => {
     DB.query("SELECT * FROM Produto ORDER BY ProdutoNome", (err, result) => {
@@ -230,7 +230,19 @@ app.get("/listar-produtos", (req, res) => {
             console.log(err)
             res.send(err)
         } else {
-            console.log('pegou os dados')
+            console.log('pegou os dados do produto')
+            res.send(result.rows)
+        }
+    })
+})
+
+app.get("/listar-servicos", (req, res) => {
+    DB.query("SELECT * FROM Servico ORDER BY ServicoNome", (err, result) => {
+        if (err) {
+            console.log(err)
+            res.send(err)
+        } else {
+            console.log('pegou os dados do servico')
             res.send(result.rows)
         }
     })

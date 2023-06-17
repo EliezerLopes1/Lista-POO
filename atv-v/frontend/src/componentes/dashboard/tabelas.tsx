@@ -1,4 +1,3 @@
-import { Component } from 'react';
 import Table from 'react-bootstrap/Table';
 
 export function ListagemTop5() {

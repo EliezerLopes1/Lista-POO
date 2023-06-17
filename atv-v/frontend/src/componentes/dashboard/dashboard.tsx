@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { ListagemTop5, ListagemTop10, ListagemMaisConsumidos } from "./tabelas";
-import "./margin.css"
+import "../margin.css"
 import "./dashboard.css"
 
 function Dashboard() {

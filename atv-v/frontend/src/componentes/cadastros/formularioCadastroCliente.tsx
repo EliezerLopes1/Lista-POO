@@ -1,7 +1,7 @@
 import { useState } from "react";
-import "./margin.css"
+import "../margin.css"
 import Axios from 'axios'
-import { MyToast } from "../alertas/swal-mixin";
+import { MyToast } from "../../alertas/swal-mixin";
 
 function FormularioCadastroCliente(props: { tema: any; }) {
     const tema = props.tema;

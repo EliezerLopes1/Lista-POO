@@ -50,7 +50,12 @@ function BarraNavegacao(props: { tema: any; }) {
                   <NavDropdown.Item href="/adicionar-telefone">Adicionar um telefone</NavDropdown.Item>
                   <NavDropdown.Item href="/adicionar-pet">Adicionar um Pet</NavDropdown.Item>
                 </NavDropdown>
-  
+
+                <NavDropdown title="Consumir" id="basic-nav-dropdown">
+                  <NavDropdown.Item href="/consumir-produto">Consumir produtos</NavDropdown.Item>
+                  <NavDropdown.Item href="/consumir-servico">Consumir serviços</NavDropdown.Item>
+                </NavDropdown>
+
                 <Nav.Link href="/dashboard">Dashboard</Nav.Link>
               </Nav>
             </Navbar.Collapse>

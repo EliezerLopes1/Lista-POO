@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useEffect, useState } from "react";
-import "./margin.css"
+import "../margin.css"
 import Axios from 'axios'
 
 
@@ -36,11 +36,12 @@ function ListaProdutos(props: { tema: any; }) {
     <div className="container-fluid">
       <div className="list-group">
         <div className="margin-lista">
+        <h2 style={{ textAlign: "center" }}>Lista de Produtos</h2>
           <table className="table table-hover table-bordered mt-5">
             <thead>
               <tr>
                 <th scope="col">Nome</th>
-                <th scope="col">Preço</th>
+                <th scope="col">Preço (R$)</th>
               </tr>
             </thead>
             <tbody className="table-group-divider">
@@ -56,20 +57,6 @@ function ListaProdutos(props: { tema: any; }) {
           </table>
         </div>
       </div>
-
-      {/* Popup que abre as informações dos produtos */}
-      {/* <Modal show={modalAberto} onHide={handleFecharModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>{produtoSelecionado?.produtonome}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p>Preço: R$ {produtoSelecionado?.produtopreco}</p>
-          
-        </Modal.Body>
-        <Modal.Footer>
-          <button className="btn btn-secondary" onClick={handleFecharModal}>Fechar</button>
-        </Modal.Footer>
-      </Modal> */}
     </div>
     
   );

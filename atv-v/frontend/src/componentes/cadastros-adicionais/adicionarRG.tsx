@@ -1,6 +1,6 @@
 import { useState } from "react";
-import "./margin.css"
-import { MyToast } from "../alertas/swal-mixin";
+import "../margin.css"
+import { MyToast } from "../../alertas/swal-mixin";
 import Axios from 'axios'
 
 
