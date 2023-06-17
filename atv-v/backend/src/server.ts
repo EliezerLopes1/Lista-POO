@@ -628,7 +628,7 @@ app.delete("/excluirTelefone/:telefoneID/:IDcliente", (req, res) => {
     const IDcliente = req.params.IDcliente;
 
     // Executar a consulta DELETE na tabela clientetelefone
-    const query = `DELETE FROM ClienteTelefone WHERE ClienteTelefoneID = $1 AND ClienteID = $2` 
+    const query = `DELETE FROM ClienteTelefone WHERE ClienteTelefoneID = $1 AND ClienteID = $2`
     //IN (SELECT clienteid FROM cliente WHERE clientecpf = $2)`;
 
     DB.query(query, [telefoneID, IDcliente])
@@ -690,6 +690,213 @@ app.delete("/excluirPet/:idPet/:IDcliente", (req, res) => {
             res.status(500).json({ error: "Erro ao excluir registros de produtosconsumidoscliente" });
         });
 });
+
+function listarProdutosMaisConsumidos(callback) {
+    DB.query(
+        `SELECT p.ProdutoNome, COUNT(*) AS Quantidade
+        FROM Produto p
+        JOIN ProdutosConsumidosCliente pc ON p.ProdutoID = pc.ProdutoID
+        GROUP BY p.ProdutoNome
+        ORDER BY Quantidade DESC`,
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                callback(err);
+            } else {
+                callback(null, result.rows);
+            }
+        }
+    );
+}
+
+app.get("/produtosMaisConsumidos", (req, res) => {
+    listarProdutosMaisConsumidos((err, produtos) => {
+        if (err) {
+            res
+                .status(500)
+                .json({ error: "Erro ao listar produtos mais consumidos" });
+        } else {
+            res.json(produtos);
+        }
+    });
+});
+
+function listarServicosMaisConsumidos(callback) {
+    DB.query(
+        `SELECT s.ServicoNome, COUNT(*) AS Quantidade
+        FROM Servico s
+        JOIN ServicoConsumidosCliente sc ON s.ServicoID = sc.ServicoID
+        GROUP BY s.ServicoNome
+        ORDER BY Quantidade DESC`,
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                callback(err);
+            } else {
+                callback(null, result.rows);
+            }
+        }
+    );
+}
+
+app.get('/listarServicosMaisConsumidos', (req, res) => {
+    listarServicosMaisConsumidos((err, result) => {
+        if (err) {
+            res.status(500).json({ error: 'Erro ao obter os serviços mais consumidos' });
+        } else {
+            res.json(result);
+        }
+    });
+});
+
+app.get("/clientesMaisConsumiramProdutosQTD", (req, res) => {
+    const quantidade = req.body.quantidade || 10; // Número padrão de clientes a serem exibidos
+
+    const SQL = `
+        SELECT c.ClienteID, c.ClienteNomeSocial, COUNT(pc.ProdutoID) AS total_produtos_consumidos
+        FROM Cliente c
+        LEFT JOIN ProdutosConsumidosCliente pc ON c.ClienteID = pc.ClienteID
+        GROUP BY c.ClienteID, c.ClienteNomeSocial
+        ORDER BY total_produtos_consumidos DESC
+        LIMIT $1;
+      `;
+
+    DB.query(SQL, [quantidade], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({
+                error: "Erro ao recuperar os clientes que mais consumiram produtos.",
+            });
+        } else {
+            res.json(result.rows);
+        }
+    });
+});
+
+app.get("/clientesMaisConsumiramServicosQTD", (req, res) => {
+    const quantidade = req.body.quantidade || 10; // Número padrão de clientes a serem exibidos
+
+    const SQL = `
+        SELECT c.ClienteID, c.ClienteNomeSocial, COUNT(sc.ServicoID) AS total_servicos_consumidos
+        FROM Cliente c
+        LEFT JOIN ServicoConsumidosCliente sc ON c.ClienteID = sc.ClienteID
+        GROUP BY c.ClienteID, c.ClienteNomeSocial
+        ORDER BY total_servicos_consumidos DESC
+        LIMIT $1;
+      `;
+
+    DB.query(SQL, [quantidade], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({
+                error: "Erro ao recuperar os clientes que mais consumiram serviços.",
+            });
+        } else {
+            res.json(result.rows);
+        }
+    });
+});
+
+app.get("/clientesMaisConsumiramProdutosValor", (req, res) => {
+    const quantidade = req.body.quantidade || 10; // Número padrão de clientes a serem exibidos
+
+    const SQL = `
+        SELECT c.ClienteID, c.ClienteNomeSocial, SUM(p.ProdutoPreco) AS total_valor_produtos_consumidos
+        FROM Cliente c
+        LEFT JOIN ProdutosConsumidosCliente pc ON c.ClienteID = pc.ClienteID
+        LEFT JOIN Produto p ON pc.ProdutoID = p.ProdutoID
+        GROUP BY c.ClienteID, c.ClienteNomeSocial
+        ORDER BY total_valor_produtos_consumidos DESC
+        LIMIT $1;
+      `;
+
+    DB.query(SQL, [quantidade], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({
+                error:
+                    "Erro ao recuperar os clientes que mais consumiram produtos em valor.",
+            });
+        } else {
+            res.json(result.rows);
+        }
+    });
+});
+
+app.get("/clientesMaisConsumiramServicosValor", (req, res) => {
+    const quantidade = req.body.quantidade || 10; // Número padrão de clientes a serem exibidos
+
+    const SQL = `
+        SELECT c.ClienteID, c.ClienteNomeSocial, SUM(s.ServicoPreco) AS total_valor_servicos_consumidos
+        FROM Cliente c
+        LEFT JOIN ServicoConsumidosCliente sc ON c.ClienteID = sc.ClienteID
+        LEFT JOIN Servico s ON sc.ServicoID = s.ServicoID
+        GROUP BY c.ClienteID, c.ClienteNomeSocial
+        ORDER BY total_valor_servicos_consumidos DESC
+        LIMIT $1;
+      `;
+
+    DB.query(SQL, [quantidade], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({
+                error:
+                    "Erro ao recuperar os clientes que mais consumiram serviços em valor.",
+            });
+        } else {
+            res.json(result.rows);
+        }
+    });
+});
+
+app.get("/clientesMaisConsumiramProdutosQTD", (req, res) => {
+    const quantidade = req.body.quantidade || 10; // Número padrão de clientes a serem exibidos
+
+    const SQL = `
+        SELECT c.ClienteID, c.ClienteNomeSocial, COUNT(pc.ProdutoID) AS total_produtos_consumidos
+        FROM Cliente c
+        LEFT JOIN ProdutosConsumidosCliente pc ON c.ClienteID = pc.ClienteID
+        GROUP BY c.ClienteID, c.ClienteNomeSocial
+        ORDER BY total_produtos_consumidos DESC
+        LIMIT $1;
+      `;
+
+    DB.query(SQL, [quantidade], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({
+                error: "Erro ao recuperar os clientes que mais consumiram produtos.",
+            });
+        } else {
+            res.json(result.rows);
+        }
+    });
+});
+
+app.get("/clientesMaisConsumiramServicosQTD", (req, res) => {
+    const quantidade = req.body.quantidade || 10; // Número padrão de clientes a serem exibidos
+
+    const SQL = `
+        SELECT c.ClienteID, c.ClienteNomeSocial, COUNT(sc.ServicoID) AS total_servicos_consumidos
+        FROM Cliente c
+        LEFT JOIN ServicoConsumidosCliente sc ON c.ClienteID = sc.ClienteID
+        GROUP BY c.ClienteID, c.ClienteNomeSocial
+        ORDER BY total_servicos_consumidos DESC
+        LIMIT $1;
+      `;
+
+    DB.query(SQL, [quantidade], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({
+                error: "Erro ao recuperar os clientes que mais consumiram serviços.",
+            });
+        } else {
+            res.json(result.rows);
+        }
+    });
+});
+
 
 
 
