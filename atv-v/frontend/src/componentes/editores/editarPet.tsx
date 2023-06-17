@@ -63,9 +63,6 @@ function EditarPet(props: { tema: any; }) {
     await Axios.delete(`http://localhost:3001/excluirPet/${pet_id}/${clienteID}`)
       .then((response) => {
         console.log(response.data)
-
-        //Swal.fire({ title: "Produto excluído com sucesso.", confirmButtonColor: "#00ced1", icon: "success" })
-
         MyToast.fire("Pet excluído com sucesso.", "", "success")
       }).catch((error) => {
         console.log(error);
@@ -77,7 +74,7 @@ function EditarPet(props: { tema: any; }) {
     <div className="container-fluid">
       <form>
         <div className="margin-lista">
-          <h2 style={{ textAlign: "center" }}>Editar um Pet</h2>
+          <h2 style={{ textAlign: "center" }}>Editar Pet</h2>
         </div>
         <div className="margin-lista">
           <div className="input-group mb-3">

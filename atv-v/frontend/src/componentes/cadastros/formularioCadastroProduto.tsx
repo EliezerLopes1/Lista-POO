@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../margin.css"
 import { MyToast } from "../../alertas/swal-mixin";
 import Axios from 'axios'
+import Swal from "sweetalert2";
 
 function FormularioCadastroProduto(props: { tema: any; }) {
     const tema = props.tema;
@@ -21,12 +22,16 @@ function FormularioCadastroProduto(props: { tema: any; }) {
         produtoNome: nome,
         produtoPreco: preco
       }).then((response) => {
-        if (response.data.msg !== " ") {
+        if (response.data.status === "OK") {
           MyToast.fire({
             icon: 'success',
             title: response.data.msg
           })
           limparCampos()
+        }
+
+        if (response.data.status !== "OK" ) {
+          Swal.fire("ERRO", response.data.erro, "error")
         }
       })
     }

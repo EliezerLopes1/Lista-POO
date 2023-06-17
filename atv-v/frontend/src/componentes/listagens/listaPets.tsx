@@ -18,7 +18,7 @@ function ListaPets() {
 
     const [pets, setPets] = useState<Pets[]>([] as any);
     const navigate = useNavigate()
-    
+
     const clienteID = localStorage.getItem('key_para_pet')
     const PF = localStorage.getItem('CPF')
 
@@ -91,7 +91,11 @@ function ListaPets() {
                                 </tr>
                             ))}
                         </tbody>
+
                     </table>
+                    <div className="d-flex justify-content-center input-group mb-3">
+                        <button className="btn btn-secondary" onClick={() => navigate('/lista-clientes')}>Voltar</button>
+                    </div>
                 </div>
             </div>
         </div>

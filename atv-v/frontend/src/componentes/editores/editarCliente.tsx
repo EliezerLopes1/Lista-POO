@@ -81,7 +81,7 @@ function EditarCliente(props: { tema: any; }) {
 
                     <div className="d-flex justify-content-center input-group mb-3">
                         <button className="btn btn-secondary" type="button" onClick={() => navigate('/lista-clientes')}>Voltar</button>
-                        <button className="btn btn-outline-secondary" type="button" style={{ background: tema }} onClick={editar}>Cadastrar</button>
+                        <button className="btn btn-outline-secondary" type="button" style={{ background: tema }} onClick={editar}>Editar</button>
                     </div>
                 </div>
             </form>

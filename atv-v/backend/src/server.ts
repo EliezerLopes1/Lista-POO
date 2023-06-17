@@ -36,7 +36,7 @@ app.post('/cadastrar-cliente', (req, res) => {
     DB.query(SQL, [nome, nomeSocial, cpf, cpfDataEmissao], (err, result) => {
         if (err) {
             console.log(err)
-            res.send(err)
+            res.send({erro: err})
         } else {
             console.log('inseriu')
 
@@ -52,29 +52,35 @@ app.post('/cadastrar-cliente', (req, res) => {
                 DB.query(SQL2, [clienteID, petNome, petRaca, petTipo, petGenero], (err, result) => {
                     if (err) {
                         console.log(err)
+                        res.send({erro: err})
                     } else {
                         console.log('inseriu pet tbm')
+                        res.send({msg: "Pet inserido", status: "OK"})
                     }
                 })
 
                 DB.query(SQL3, [clienteID, telefoneDDD, telefoneNumero], (err, result) => {
                     if (err) {
                         console.log(err)
+                        res.send({erro: err})
                     } else {
                         console.log('inseriu telefone tbm')
+                        res.send({msg: "Telefone inserido", status: "OK"})
                     }
                 })
 
                 DB.query(SQL4, [clienteID, rg, rgDataEmissao], (err, result) => {
                     if (err) {
                         console.log(err)
+                        res.send({erro: err})
                     } else {
                         console.log('inseriu RG tbm')
+                        res.send({msg: "RG inserido", status: "OK"})
                     }
                 })
             }
 
-            res.send({ msg: "Cliente inserido com sucesso." })
+            res.send({msg: "Cliente inserido com sucesso.", status: "OK"})
         }
     })
 })
@@ -84,19 +90,15 @@ app.post('/editar-cliente/:ID', (req, res) => {
 
     const { nome, nomeSocial } = req.body
     const { cpf, cpfDataEmissao } = req.body
-    // const { rg, rgDataEmissao } = req.body
-
-    // const { telefoneDDD, telefoneNumero } = req.body
-    // const { petNome, petTipo, petRaca, petGenero } = req.body
 
     let SQL = "UPDATE cliente SET ClienteNome = $1, ClienteNomeSocial = $2, ClienteCPF = $3, ClienteCPFDataEmissao = $4) WHERE ClienteID = $5"
 
     DB.query(SQL, [nome, nomeSocial, cpf, cpfDataEmissao, ID], (err, result) => {
         if (err) {
             console.log(err)
-            res.send(err)
+            res.send({erro: err})
         } else {
-            res.send({ msg: "Cliente editado com sucesso." })
+            res.send({ msg: "Cliente editado com sucesso.", status: "OK"})
         }
     })
 })
@@ -109,10 +111,10 @@ app.post('/cadastrar-produto', (req, res) => {
     DB.query(SQL, [produtoNome, produtoPreco], (err, result) => {
         if (err) {
             console.log(err)
-            res.send(err)
+            res.send({erro: "Erro ao tentar cadastrar um produto"})
         } else {
             console.log('deu bom')
-            res.send({ msg: 'Produto inserido com sucesso.', data: result.rows.values().next() })
+            res.send({msg: "Produto inserido com sucesso.", status: "OK"})
         }
     })
 })
@@ -125,10 +127,10 @@ app.post('/cadastrar-servico', (req, res) => {
     DB.query(SQL, [servicoNome, servicoPreco], (err, result) => {
         if (err) {
             console.log(err)
-            res.send(err)
+            res.send({erro: "Erro ao tentar cadastrar um serviço"})
         } else {
             console.log('deu bom')
-            res.send({ msg: 'Serviço inserido com sucesso.', data: result.rows.values().next() })
+            res.send({ msg: 'Serviço inserido com sucesso.',  status: "OK" })
         }
     })
 })
@@ -230,7 +232,7 @@ app.post("/consumir-produtos", (req, res) => {
     DB.query(SQL1, [CPF], (err, result1) => {
         if (result1.rowCount === 0) {
             console.log(err)
-            res.send({ erro: "ERRO" })
+            res.send({ erro: "Erro ao tentar consumir um Produto" })
         } else {
             const clienteID = result1.rows[0].clienteid
             const clienteNome = result1.rows[0].clientenome
@@ -241,14 +243,14 @@ app.post("/consumir-produtos", (req, res) => {
             DB.query(SQL2, [clienteID], (err, result2) => {
                 if (result2.rowCount === 0) {
                     console.log(err)
-                    res.send({ erro: "ERRO" })
+                    res.send({ erro: "Erro ao tentar consumir um Produto" })
                 } else {
                     const petID = result2.rows[0].petid
 
                     DB.query(SQL3, [produtoNome], (err, result3) => {
                         if (result3.rowCount === 0) {
                             console.log(err)
-                            res.send({ erro: "ERRO" })
+                            res.send({ erro: "Erro ao tentar consumir um Produto" })
                         } else {
                             const produtoID = result3.rows[0].produtoid
                             const nomeProduto = result3.rows[0].produtonome
@@ -258,7 +260,7 @@ app.post("/consumir-produtos", (req, res) => {
                             DB.query(SQLFinal, [produtoID, clienteID, petID], (err, resultFinal) => {
                                 if (resultFinal.rowCount === 0) {
                                     console.log(err)
-                                    res.send({ erro: "ERRO" })
+                                    res.send({ erro: "Erro ao tentar consumir um Produto" })
                                 } else {
                                     console.log("INSERIU")
                                     res.send({ msg: "INSERIU ESSA BOSTA", desc: `Produto ${nomeProduto} consumido com sucesso pelo cliente ${clienteNome}.` })
@@ -281,7 +283,7 @@ app.post("/consumir-servicos", (req, res) => {
     DB.query(SQL1, [CPF], (err, result1) => {
         if (result1.rowCount === 0) {
             console.log(err)
-            res.send({ erro: "ERRO" })
+            res.send({ erro: "Erro ao tentar consumir um Serviço" })
         } else {
             const clienteID = result1.rows[0].clienteid
             const clienteNome = result1.rows[0].clientenome
@@ -292,14 +294,14 @@ app.post("/consumir-servicos", (req, res) => {
             DB.query(SQL2, [clienteID], (err, result2) => {
                 if (result2.rowCount === 0) {
                     console.log(err)
-                    res.send({ erro: "ERRO" })
+                    res.send({ erro: "Erro ao tentar consumir um Serviço" })
                 } else {
                     const petID = result2.rows[0].petid
 
                     DB.query(SQL3, [servicoNome], (err, result3) => {
                         if (result3.rowCount === 0) {
                             console.log(err)
-                            res.send({ erro: "ERRO" })
+                            res.send({ erro: "Erro ao tentar consumir um Serviço" })
                         } else {
                             const servicoID = result3.rows[0].servicoid
                             const nomeServico = result3.rows[0].serviconome
@@ -309,7 +311,7 @@ app.post("/consumir-servicos", (req, res) => {
                             DB.query(SQLFinal, [servicoID, clienteID, petID], (err, resultFinal) => {
                                 if (resultFinal.rowCount === 0) {
                                     console.log(err)
-                                    res.send({ erro: "ERRO" })
+                                    res.send({ erro: "Erro ao tentar consumir um Serviço" })
                                 } else {
                                     console.log("INSERIU")
                                     res.send({ msg: "INSERIU ESSA BOSTA", desc: `Serviço ${nomeServico} consumido com sucesso pelo cliente ${clienteNome}.` })
@@ -339,19 +341,6 @@ app.get('/listar-clientes', (req, res) => {
         }
     })
 })
-
-// app.get("/buscar-rg/:id", (req, res) => {
-//     const { id } = req.params
-
-//     DB.query("SELECT * FROM ClienteRG WHERE ClienteID = $1", [id], (err, result) => {
-//         if (err) {
-//             console.log(err)
-//         } else {
-//             console.log('achou')
-//             res.send(result.rows)
-//         }
-//     })
-// })
 
 app.get("/listar-produtos", (req, res) => {
     DB.query("SELECT * FROM Produto ORDER BY ProdutoNome", (err, result) => {
@@ -483,11 +472,11 @@ app.put('/editar-telefone/:ID', (req, res) => {
     })
 })
 
-app.put('/editar-rg/:ID', (req, res) => {
-    const { ID } = req.params
+app.put('/editar-rg/:rgID/:ID', (req, res) => {
+    const { ID, rgID } = req.params
     const { rg, rgDataEmissao } = req.body
 
-    DB.query("UPDATE ClienteRG SET RGNumero = $1, RGDataEmissao = $2 WHERE ClienteID = $3", [rg, rgDataEmissao, ID], (err, result) => {
+    DB.query("UPDATE ClienteRG SET RGNumero = $1, RGDataEmissao = $2 WHERE RG_ID = $3 AND ClienteID = $4", [rg, rgDataEmissao, rgID, ID], (err, result) => {
         if (err) {
             console.log(err)
             res.send({ erro: "Erro ao editar RG." })

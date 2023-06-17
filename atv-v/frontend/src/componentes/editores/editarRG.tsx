@@ -38,7 +38,7 @@ function EditarRG(props: { tema: any; }) {
   const editar = async (event: any) => {
     event.preventDefault()
 
-    await Axios.put(`http://localhost:3001/editar-rg/${clienteID}`, {
+    await Axios.put(`http://localhost:3001/editar-rg/${ID}/${clienteID}`, {
       rg: RG,
       rgDataEmissao: rgData
     }).then((response) => {

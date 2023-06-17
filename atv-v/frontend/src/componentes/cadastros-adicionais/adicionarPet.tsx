@@ -40,7 +40,7 @@ function AdicionarPet(props: { tema: any; }) {
       }
 
       if (response.data.status !== "OK") {
-        Swal.fire("ERRO", response.data.msg, "error")
+        Swal.fire("ERRO", response.data.erro, "error")
       }
     })
   }

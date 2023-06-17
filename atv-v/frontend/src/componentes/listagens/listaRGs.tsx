@@ -79,6 +79,9 @@ function ListaRGs() {
                             ))}
                         </tbody>
                     </table>
+                    <div className="d-flex justify-content-center input-group mb-3">
+                        <button className="btn btn-secondary" onClick={() => navigate('/lista-clientes')}>Voltar</button>
+                    </div>
                 </div>
             </div>
         </div>
