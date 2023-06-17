@@ -99,6 +99,30 @@ export function ListagemTop10() {
         total_servicos_consumidos: string;
     }
 
+    interface ProdutoMaisConsumidoPorRaca {
+        petraca: String;
+        produtonome: string;
+        quantidade: string;
+    }
+
+    interface ServicoMaisConsumidoPorRaca {
+        petraca: String;
+        serviconome: string;
+        quantidade: string;
+    }
+
+    interface ProdutoMaisConsumidoPorTipo {
+        pettipo: String;
+        produtonome: string;
+        quantidade: string;
+    }
+
+    interface ServicoMaisConsumidoPorTipo {
+        pettipo: String;
+        serviconome: string;
+        quantidade: string;
+    }
+
     const [ClienteMaisConsumiramProdutos, setClienteMaisConsumiuProdutos] = useState<ClienteMaisConsumiramProdutos[]>([]);
 
     useEffect(() => {
@@ -125,6 +149,70 @@ export function ListagemTop10() {
         axios.get("http://localhost:3001/clientesMaisConsumiramServicosQTD")
             .then((response) => {
                 setClienteMaisConsumiuServicos(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    const [ProdutoMaisConsumidoPorRaca, setProdutoMaisConsumidoPorRaca] = useState<ProdutoMaisConsumidoPorRaca[]>([]);
+
+    useEffect(() => {
+        listarProdutosMaisConsumidosRaca();
+    }, []);
+
+    const listarProdutosMaisConsumidosRaca = () => {
+        axios.get("http://localhost:3001/produtosMaisConsumidosPorRacaPet")
+            .then((response) => {
+                setProdutoMaisConsumidoPorRaca(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    const [ServicoMaisConsumidoPorRaca, setServicoMaisConsumidoPorRaca] = useState<ServicoMaisConsumidoPorRaca[]>([]);
+
+    useEffect(() => {
+        listarServicosMaisConsumidosRaca();
+    }, []);
+
+    const listarServicosMaisConsumidosRaca = () => {
+        axios.get("http://localhost:3001/servicosMaisConsumidosPorRacaPet")
+            .then((response) => {
+                setServicoMaisConsumidoPorRaca(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    const [ProdutoMaisConsumidoPorTipo, setProdutoMaisConsumidoPorTipo] = useState<ProdutoMaisConsumidoPorTipo[]>([]);
+
+    useEffect(() => {
+        listarProdutosMaisConsumidosTipo();
+    }, []);
+
+    const listarProdutosMaisConsumidosTipo = () => {
+        axios.get("http://localhost:3001/produtosMaisConsumidosPorTipoPet")
+            .then((response) => {
+                setProdutoMaisConsumidoPorRaca(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    const [ServicoMaisConsumidoPorTipo, setServicoMaisConsumidoPorTipo] = useState<ServicoMaisConsumidoPorTipo[]>([]);
+
+    useEffect(() => {
+        listarServicosMaisConsumidosTipo();
+    }, []);
+
+    const listarServicosMaisConsumidosTipo = () => {
+        axios.get("http://localhost:3001/servicosMaisConsumidosPorTipoPet")
+            .then((response) => {
+                setServicoMaisConsumidoPorTipo(response.data);
             })
             .catch((error) => {
                 console.error(error);
@@ -170,65 +258,43 @@ export function ListagemTop10() {
                         <Table striped bordered hover>
                             <thead>
                                 <tr>
-                                    <th></th>
-                                    <th>Nome</th>
-                                    <th>Tipo e Raça</th>
+                                    <th scope="col">Tipo / Raça do pet</th>
+                                    <th scope="col">Produto / Serviço</th>
+                                    <th scope="col">Quantidade</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Gato - Mestiço</td>
+                                {ProdutoMaisConsumidoPorRaca.map((ProdutoMaisConsumidoPorRaca) => (
+                                    <tr>
+                                        <td>{ProdutoMaisConsumidoPorRaca.petraca}</td>
+                                        <td>{ProdutoMaisConsumidoPorRaca.produtonome}</td>
+                                        <td>{ProdutoMaisConsumidoPorRaca.quantidade}</td>
+                                    </tr>
+                                ))}
 
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Jacob</td>
-                                    <td>Cachorro - Pug</td>
+                                {ServicoMaisConsumidoPorRaca.map((ServicoMaisConsumidoPorRaca) => (
+                                    <tr>
+                                        <td>{ServicoMaisConsumidoPorRaca.petraca}</td>
+                                        <td>{ServicoMaisConsumidoPorRaca.serviconome}</td>
+                                        <td>{ServicoMaisConsumidoPorRaca.quantidade}</td>
+                                    </tr>
+                                ))}
 
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Larry the Bird</td>
-                                    <td>Coelho - Golias</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>Thomas</td>
-                                    <td>Cachorro - Rottweiler</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>Jonas</td>
-                                    <td>Gato - Vira-Lata</td>
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>Junior</td>
-                                    <td>Gato - Siamês</td>
-                                </tr>
-                                <tr>
-                                    <td>7</td>
-                                    <td>Mário</td>
-                                    <td>Cachorro</td>
+                                {ProdutoMaisConsumidoPorTipo.map((ProdutoMaisConsumidoPorTipo) => (
+                                    <tr>
+                                        <td>{ProdutoMaisConsumidoPorTipo.pettipo}</td>
+                                        <td>{ProdutoMaisConsumidoPorTipo.produtonome}</td>
+                                        <td>{ProdutoMaisConsumidoPorTipo.quantidade}</td>
+                                    </tr>
+                                ))}
 
-                                </tr>
-                                <tr>
-                                    <td>8</td>
-                                    <td>Luan the Bird</td>
-                                    <td>Cachorro - Vira-Lata</td>
-                                </tr>
-                                <tr>
-                                    <td>9</td>
-                                    <td>Tomas</td>
-                                    <td>Cachorro - Pinscher</td>
-                                </tr>
-                                <tr>
-                                    <td>10</td>
-                                    <td>Joãozinho</td>
-                                    <td>Cachorro - Poodle</td>
-                                </tr>
+                                {ServicoMaisConsumidoPorTipo.map((ServicoMaisConsumidoPorTipo) => (
+                                    <tr>
+                                        <td>{ServicoMaisConsumidoPorTipo.pettipo}</td>
+                                        <td>{ServicoMaisConsumidoPorTipo.serviconome}</td>
+                                        <td>{ServicoMaisConsumidoPorTipo.quantidade}</td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </Table>
                     </div>
