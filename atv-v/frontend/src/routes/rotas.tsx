@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Inicio from "../componentes/paginaInicial";
 import ListaCliente from "../componentes/listagens/listaClientes";
 import FormularioCadastroCliente from "../componentes/cadastros/formularioCadastroCliente";
 import FormularioCadastroProduto from "../componentes/cadastros/formularioCadastroProduto";
@@ -8,7 +9,8 @@ import ListaServicos from "../componentes/listagens/listaServicos";
 import AdicionarRG from "../componentes/cadastros-adicionais/adicionarRG";
 import AdicionarTelefone from "../componentes/cadastros-adicionais/adicionarTelefone";
 import AdicionarPet from "../componentes/cadastros-adicionais/adicionarPet";
-import Inicio from "../componentes/paginaInicial";
+import ConsumirProdutos from "../componentes/consumos/consumirProdutos";
+import ConsumirServicos from "../componentes/consumos/consumirServicos";
 import Dashboard from "../componentes/dashboard/dashboard";
 
 export const Rotas = () => {
@@ -28,8 +30,8 @@ export const Rotas = () => {
             <Route path='/adicionar-pet' element={<AdicionarPet tema="#00ced1"/>} />
 
 
-            {/* <Route path="/consumir-produto"
-            <Route path="/consumir-servico" */}
+            <Route path="/consumir-produto" element={<ConsumirProdutos tema="#00ced1" />} />
+            <Route path="/consumir-servico" element={<ConsumirServicos tema="#00ced1" />} />
 
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/' element={<Navigate to={'/home'} />} />

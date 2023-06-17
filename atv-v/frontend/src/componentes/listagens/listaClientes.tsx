@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import "../margin.css"
 import Axios from 'axios'
 import { Modal } from "react-bootstrap"
+import { MyToast } from "../../alertas/swal-mixin";
+import Swal from "sweetalert2";
 
 function ListaCliente(props: { tema: any; }) {
   let tema = props.tema;
@@ -43,6 +45,19 @@ function ListaCliente(props: { tema: any; }) {
       });
   };
 
+  const excluirCliente = async (clienteCpf: any) => {
+    await Axios.delete(`http://localhost:3001/excluirCliente/${clienteCpf}`)
+    .then((response) => {
+      console.log(response.data)
+      setModalAberto(false);
+      
+      Swal.fire({title: "Cliente excluído com sucesso.", confirmButtonColor: "#00ced1", icon: "success"}).then(() => window.location.reload())
+    }).catch((error) => {
+      console.log(error);
+      // Lida com o erro, se necessário
+    });
+  }
+
   useEffect(() => {
     listarCliente();
   }, []);
@@ -73,7 +88,7 @@ function ListaCliente(props: { tema: any; }) {
           <p><b>Data de emissão do CPF:</b> {clienteSelecionado?.clientecpfdataemissao}</p>
         </Modal.Body>
         <Modal.Footer>
-          <button className="btn btn-danger">Excluir</button>
+          <button className="btn btn-danger" onClick={() => excluirCliente(clienteSelecionado?.clientecpf)}>Excluir</button>
           <button className="btn btn-secondary" onClick={handleFecharModal}>Fechar</button>
         </Modal.Footer>
       </Modal>

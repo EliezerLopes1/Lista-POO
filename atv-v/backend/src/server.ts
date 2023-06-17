@@ -195,7 +195,111 @@ app.post('/adicionar-rg', (req, res) => {
     })
 })
 
+//CONSUMOS
 
+app.post("/consumir-produtos", (req, res) => {
+    const { CPF, produtoNome } = req.body
+
+    let SQL1 = "SELECT * FROM Cliente WHERE ClienteCPF = $1"
+
+    DB.query(SQL1, [CPF], (err, result1) => {
+        if (result1.rowCount === 0) {
+            console.log(err)
+            res.send({ erro: "ERRO" })
+        } else {
+            const clienteID = result1.rows[0].clienteid
+            const clienteNome = result1.rows[0].clientenome
+
+            let SQL2 = "SELECT * FROM Pets WHERE ClienteID = $1"
+            let SQL3 = "SELECT * FROM Produto WHERE ProdutoNome = $1"
+
+            DB.query(SQL2, [clienteID], (err, result2) => {
+                if (result2.rowCount === 0) {
+                    console.log(err)
+                    res.send({ erro: "ERRO" })
+                } else {
+                    const petID = result2.rows[0].petid
+
+                    DB.query(SQL3, [produtoNome], (err, result3) => {
+                        if (result3.rowCount === 0) {
+                            console.log(err)
+                            res.send({ erro: "ERRO" })
+                        } else {
+                            const produtoID = result3.rows[0].produtoid
+                            const nomeProduto = result3.rows[0].produtonome
+
+                            let SQLFinal = "INSERT INTO ProdutosConsumidosCliente (ProdutoID, ClienteID, PetID) VALUES ($1, $2, $3)"
+
+                            DB.query(SQLFinal, [produtoID, clienteID, petID], (err, resultFinal) => {
+                                if (resultFinal.rowCount === 0) {
+                                    console.log(err)
+                                    res.send({ erro: "ERRO" })
+                                } else {
+                                    console.log("INSERIU")
+                                    res.send({ msg: "INSERIU ESSA BOSTA", desc: `Produto ${nomeProduto} consumido com sucesso pelo cliente ${clienteNome}.` })
+                                }
+                            })
+                        }
+
+                    })
+                }
+            })
+        }
+    })
+})
+
+app.post("/consumir-servicos", (req, res) => {
+    const { CPF, servicoNome } = req.body
+
+    let SQL1 = "SELECT * FROM Cliente WHERE ClienteCPF = $1"
+
+    DB.query(SQL1, [CPF], (err, result1) => {
+        if (result1.rowCount === 0) {
+            console.log(err)
+            res.send({ erro: "ERRO" })
+        } else {
+            const clienteID = result1.rows[0].clienteid
+            const clienteNome = result1.rows[0].clientenome
+
+            let SQL2 = "SELECT * FROM Pets WHERE ClienteID = $1"
+            let SQL3 = "SELECT * FROM Servico WHERE ServicoNome = $1"
+
+            DB.query(SQL2, [clienteID], (err, result2) => {
+                if (result2.rowCount === 0) {
+                    console.log(err)
+                    res.send({ erro: "ERRO" })
+                } else {
+                    const petID = result2.rows[0].petid
+
+                    DB.query(SQL3, [servicoNome], (err, result3) => {
+                        if (result3.rowCount === 0) {
+                            console.log(err)
+                            res.send({ erro: "ERRO" })
+                        } else {
+                            const servicoID = result3.rows[0].servicoid
+                            const nomeServico = result3.rows[0].serviconome
+
+                            let SQLFinal = "INSERT INTO ServicoConsumidosCliente (ServicoID, ClienteID, PetID) VALUES ($1, $2, $3)"
+
+                            DB.query(SQLFinal, [servicoID, clienteID, petID], (err, resultFinal) => {
+                                if (resultFinal.rowCount === 0) {
+                                    console.log(err)
+                                    res.send({ erro: "ERRO" })
+                                } else {
+                                    console.log("INSERIU")
+                                    res.send({ msg: "INSERIU ESSA BOSTA", desc: `Serviço ${nomeServico} consumido com sucesso pelo cliente ${clienteNome}.` })
+                                }
+                            })
+                        }
+
+                    })
+                }
+            })
+        }
+    })
+})
+
+app.post("/insere-valor-gasto")
 //LISTAGENS
 
 app.get('/listar-clientes', (req, res) => {
@@ -247,6 +351,70 @@ app.get("/listar-servicos", (req, res) => {
         }
     })
 })
+
+
+
+//DELETES
+
+app.delete("/excluirCliente/:cpf", (req, res) => {
+    const clientecpf = req.params.cpf;
+
+    // Excluir registros da tabela produtosconsumidoscliente
+    const deleteProdutosQuery = `DELETE FROM produtosconsumidoscliente WHERE clienteid IN (SELECT clienteid FROM cliente WHERE clientecpf = $1)`;
+
+    DB.query(deleteProdutosQuery, [clientecpf])
+        .then(() => {
+            // Excluir registros da tabela servicoconsumidoscliente
+            const deleteServicosQuery = `DELETE FROM servicoconsumidoscliente WHERE clienteid IN (SELECT clienteid FROM cliente WHERE clientecpf = $1)`;
+
+            DB.query(deleteServicosQuery, [clientecpf])
+                .then(() => {
+                    // Excluir registros da tabela clientetelefone
+                    const deleteTelefonesQuery = `DELETE FROM clientetelefone WHERE clienteid IN (SELECT clienteid FROM cliente WHERE clientecpf = $1)`;
+
+                    DB.query(deleteTelefonesQuery, [clientecpf])
+                        .then(() => {
+                            // Excluir registros da tabela clienterg
+                            const deleteRgsQuery = `DELETE FROM clienterg WHERE clienteid IN (SELECT clienteid FROM cliente WHERE clientecpf = $1)`;
+
+                            DB.query(deleteRgsQuery, [clientecpf])
+                                .then(() => {
+                                    // Excluir registros da tabela pets
+                                    const deletePetsQuery = `DELETE FROM pets WHERE clienteid IN (SELECT clienteid FROM cliente WHERE clientecpf = $1)`;
+
+                                    DB.query(deletePetsQuery, [clientecpf])
+                                        .then(() => {
+                                            // Excluir o cliente da tabela cliente
+                                            const deleteClienteQuery = `DELETE FROM cliente WHERE clientecpf = $1`;
+
+                                            DB.query(deleteClienteQuery, [clientecpf])
+                                                .then(() => {
+                                                    res.status(200).json({ message: "Cliente excluído com sucesso" });
+                                                })
+                                                .catch((error) => {
+                                                    res.status(500).json({ error: "Erro ao excluir cliente" });
+                                                });
+                                        })
+                                        .catch((error) => {
+                                            res.status(500).json({ error: "Erro ao excluir registros de pets" });
+                                        });
+                                })
+                                .catch((error) => {
+                                    res.status(500).json({ error: "Erro ao excluir registros de clienterg" });
+                                });
+                        })
+                        .catch((error) => {
+                            res.status(500).json({ error: "Erro ao excluir registros de clientetelefone" });
+                        });
+                })
+                .catch((error) => {
+                    res.status(500).json({ error: "Erro ao excluir registros de servicoconsumidoscliente" });
+                });
+        })
+        .catch((error) => {
+            res.status(500).json({ error: "Erro ao excluir registros de produtosconsumidoscliente" });
+        });
+});
 
 app.listen(3001, () => {
     console.log("Servidor rodando!")
