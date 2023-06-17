@@ -52,6 +52,20 @@ function EditarProduto(props: { tema: any; }) {
     })
   }
 
+  const excluirProduto = async (nome: any) => {
+    await Axios.delete(`http://localhost:3001/excluirProduto/${nome}`)
+      .then((response) => {
+        console.log(response.data)
+
+        //Swal.fire({ title: "Produto excluído com sucesso.", confirmButtonColor: "#00ced1", icon: "success" })
+
+        MyToast.fire("Produto excluído com sucesso.", "", "success")
+      }).catch((error) => {
+        console.log(error);
+        // Lida com o erro, se necessário
+      });
+  }
+
   return (
     <div className="container-fluid">
       <form>
@@ -72,7 +86,10 @@ function EditarProduto(props: { tema: any; }) {
             <button className="btn btn-secondary" type="button" onClick={() => navigate('/lista-produtos')}>Voltar</button>
             <button className="btn btn-outline-secondary" type="button" style={{ background: tema }} onClick={editar}>Editar</button>
 
-            <button className="btn btn-danger" type="button" onClick={editar}>Excluir</button>
+            <button className="btn btn-danger" type="button" onClick={() => {
+              excluirProduto(nome)
+              navigate('/lista-produtos')
+            }}>Excluir</button>
           </div>
 
 

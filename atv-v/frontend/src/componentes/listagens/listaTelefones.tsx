@@ -30,19 +30,19 @@ function ListaTelefones() {
     };
 
     const enviarDadosTelefone = (telefone: Telefones) => {
-        const id = telefone.telefoneid
+        const IDTelefone = telefone.telefoneid
         const IDcliente = telefone.clienteid
         const ddd = telefone.telefoneddd
-        const numero = telefone.telefonenumero
+        const numeroTelefone = telefone.telefonenumero
 
         const data = {
-            id: id,
+            IDTelefone: IDTelefone,
             IDcliente: IDcliente,
             ddd: ddd,
-            numero: numero
+            numeroTelefone: numeroTelefone
         }
 
-        localStorage.setItem('id', data.IDcliente)
+        localStorage.setItem('id_CLIENTE', data.IDcliente)
         localStorage.setItem('dados_telefone', JSON.stringify(data))
     }
 

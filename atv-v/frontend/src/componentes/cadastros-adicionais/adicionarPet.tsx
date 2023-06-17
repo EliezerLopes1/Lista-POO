@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../margin.css"
 import Axios from 'axios'
 import { MyToast } from "../../alertas/swal-mixin";
+import Swal from "sweetalert2";
 
 function AdicionarPet(props: { tema: any; }) {
   const tema = props.tema;
@@ -30,12 +31,16 @@ function AdicionarPet(props: { tema: any; }) {
       petRaca: petRaca,
       petGenero: petGenero
     }).then((response) => {
-      if (response.data.msg !== " ") {
+      if (response.data.status === "OK") {
         MyToast.fire({
           icon: 'success',
           title: response.data.msg
         })
         limparCampos()
+      }
+
+      if (response.data.status !== "OK") {
+        Swal.fire("ERRO", response.data.msg, "error")
       }
     })
   }

@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../margin.css"
 import { MyToast } from "../../alertas/swal-mixin";
 import Axios from 'axios'
+import Swal from "sweetalert2";
 
 
 function AdicionarRG(props: { tema: any; }) {
@@ -25,12 +26,16 @@ function AdicionarRG(props: { tema: any; }) {
       rg: RG,
       rgDataEmissao: rgData
     }).then((response) => {
-      if (response.data.msg !== " ") {
+      if (response.data.status === "OK") {
         MyToast.fire({
           icon: 'success',
           title: response.data.msg
         })
         limparCampos()
+      }
+
+      if (response.data.status !== "OK") {
+        Swal.fire("ERRO", response.data.msg, "error")
       }
     })
   }

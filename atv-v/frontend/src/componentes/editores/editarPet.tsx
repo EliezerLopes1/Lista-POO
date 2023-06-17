@@ -17,6 +17,7 @@ function EditarPet(props: { tema: any; }) {
 
   const dadosJson = localStorage.getItem('dados_pet')
   const clienteID = localStorage.getItem('cliente_id')
+  const pet_id = localStorage.getItem('pet_id')
 
   useEffect(() => {
     if (dadosJson) {
@@ -37,7 +38,7 @@ function EditarPet(props: { tema: any; }) {
   const editar = async (event: any) => {
     event.preventDefault()
 
-    await Axios.put(`http://localhost:3001/editar-pet/${clienteID}`, {
+    await Axios.put(`http://localhost:3001/editar-pet/${pet_id}/${clienteID}`, {
       petNome: petNome,
       petTipo: petTipo,
       petRaca: petRaca,
@@ -58,11 +59,25 @@ function EditarPet(props: { tema: any; }) {
     })
   }
 
+  const excluirPet = async (pet_id: any, clienteID: any) => {
+    await Axios.delete(`http://localhost:3001/excluirPet/${pet_id}/${clienteID}`)
+      .then((response) => {
+        console.log(response.data)
+
+        //Swal.fire({ title: "Produto excluído com sucesso.", confirmButtonColor: "#00ced1", icon: "success" })
+
+        MyToast.fire("Pet excluído com sucesso.", "", "success")
+      }).catch((error) => {
+        console.log(error);
+        // Lida com o erro, se necessário
+      });
+  }
+
   return (
     <div className="container-fluid">
       <form>
         <div className="margin-lista">
-          <h2 style={{ textAlign: "center" }}>Ver / Editar um Pet</h2>
+          <h2 style={{ textAlign: "center" }}>Editar um Pet</h2>
         </div>
         <div className="margin-lista">
           <div className="input-group mb-3">
@@ -80,7 +95,10 @@ function EditarPet(props: { tema: any; }) {
           <div className="d-flex justify-content-center input-group mb-3">
             <button className="btn btn-secondary" type="button" onClick={() => navigate('/lista-pets')}>Voltar</button>
             <button className="btn btn-outline-secondary" type="button" style={{ background: tema }} onClick={editar}>Editar</button>
-            <button className="btn btn-danger" type="button" onClick={editar}>Excluir</button>
+            <button className="btn btn-danger" type="button" onClick={() => {
+              excluirPet(pet_id, clienteID)
+              navigate('/lista-pets')
+              }}>Excluir</button>
           </div>
         </div>
       </form>

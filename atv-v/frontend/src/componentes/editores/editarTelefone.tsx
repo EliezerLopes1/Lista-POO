@@ -14,7 +14,8 @@ function EditarTelefone(props: { tema: any; }) {
   const [numero, setNumero] = useState("" as any)
 
   const dadosJson = localStorage.getItem('dados_telefone')
-  const clienteID = localStorage.getItem('id')
+  const clienteID = localStorage.getItem('id_CLIENTE')
+  // const teste = localStorage.getItem('NUMERO_TELEFONE')
 
   useEffect(() => {
     if (dadosJson) {
@@ -22,7 +23,7 @@ function EditarTelefone(props: { tema: any; }) {
         const dadosObj = JSON.parse(dadosJson)
 
         setDDD(dadosObj.ddd)
-        setNumero(dadosObj.numero)
+        setNumero(dadosObj.numeroTelefone)
 
       } catch (erro) {
         console.log(erro)
@@ -52,6 +53,18 @@ function EditarTelefone(props: { tema: any; }) {
     })
   }
 
+  // const excluirTelefone = async (teste: any, clienteID: any) => {
+  //   await Axios.delete(`http://localhost:3001/excluirTelefone/${teste}/${clienteID}`)
+  //     .then((response) => {
+  //       console.log(response.data)
+
+  //       MyToast.fire("Telefone excluído com sucesso.", "", "success")
+  //     }).catch((error) => {
+  //       console.log(error);
+  //       // Lida com o erro, se necessário
+  //     });
+  // }
+
   return (
     <div className="container-fluid">
       <form>
@@ -70,7 +83,10 @@ function EditarTelefone(props: { tema: any; }) {
           <div className="d-flex justify-content-center input-group mb-3">
             <button className="btn btn-secondary" type="button" onClick={() => navigate('/lista-telefones')}>Voltar</button>
             <button className="btn btn-outline-secondary" type="button" style={{ background: tema }} onClick={editar}>Editar</button>
-            <button className="btn btn-danger" type="button" onClick={editar}>Excluir</button>
+            <button className="btn btn-danger" type="button" onClick={() => {
+              // excluirTelefone(teste, clienteID)
+              navigate('/lista-telefones')
+            }}>Excluir</button>
           </div>
 
 

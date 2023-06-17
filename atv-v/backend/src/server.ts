@@ -140,8 +140,9 @@ app.post('/adicionar-pet', (req, res) => {
     let SQL1 = "SELECT * FROM Cliente WHERE ClienteCPF = $1"
 
     DB.query(SQL1, [CPF], (err, result) => {
-        if (err) {
+        if (result.rowCount === 0) {
             console.log(err)
+            res.send({ erro: "Erro ao tentar adicionar um Pet." })
         } else {
             const clienteID = result.rows[0].clienteid
             const clienteNome = result.rows[0].clientenome
@@ -149,12 +150,12 @@ app.post('/adicionar-pet', (req, res) => {
             let SQL2 = "INSERT INTO Pets (ClienteID, PetNome, PetRaca, PetTipo, PetGenero) VALUES ($1, $2, $3, $4, $5)"
 
             DB.query(SQL2, [clienteID, petNome, petTipo, petRaca, petGenero], (err, result) => {
-                if (err) {
+                if (result.rowCount === 0) {
                     console.log(err)
-                    res.send(err)
+                    res.send({ erro: "Erro ao tentar adicionar um Pet." })
                 } else {
                     console.log('deu bom')
-                    res.send({ msg: `Pet adicionado ao cliente ${clienteNome}com sucesso.`, data: result.rows.values().next() })
+                    res.send({ msg: `Pet adicionado ao cliente ${clienteNome} com sucesso.`, status: "OK" })
                 }
             })
         }
@@ -168,8 +169,9 @@ app.post('/adicionar-telefone', (req, res) => {
     let SQL1 = "SELECT * FROM Cliente WHERE ClienteCPF = $1"
 
     DB.query(SQL1, [CPF], (err, result1) => {
-        if (err) {
+        if (result1.rowCount === 0) {
             console.log(err)
+            res.send({ erro: "Erro ao tentar adicionar um Telefone." })
         } else {
             const clienteID = result1.rows[0].clienteid
             const clienteNome = result1.rows[0].clientenome
@@ -177,12 +179,12 @@ app.post('/adicionar-telefone', (req, res) => {
             let SQL2 = "INSERT INTO ClienteTelefone (ClienteID, TelefoneDDD, TelefoneNumero) VALUES ($1, $2, $3)"
 
             DB.query(SQL2, [clienteID, telefoneDDD, telefoneNumero], (err, result2) => {
-                if (err) {
+                if (result2.rowCount === 0) {
                     console.log(err)
-                    res.send(err)
+                    res.send({ erro: "Erro ao tentar adicionar um Telefone." })
                 } else {
                     console.log('deu bom')
-                    res.send({ msg: `Telefone adicionado ao cliente ${clienteNome} com sucesso.` })
+                    res.send({ msg: `Telefone adicionado ao cliente ${clienteNome} com sucesso.`, status: "OK" })
                 }
             })
         }
@@ -196,8 +198,9 @@ app.post('/adicionar-rg', (req, res) => {
     let SQL1 = "SELECT * FROM Cliente WHERE ClienteCPF = $1"
 
     DB.query(SQL1, [CPF], (err, result1) => {
-        if (err) {
+        if (result1.rowCount === 0) {
             console.log(err)
+            res.send({ erro: "Erro ao tentar adicionar um RG." })
         } else {
             const clienteID = result1.rows[0].clienteid
             const clienteNome = result1.rows[0].clientenome
@@ -205,12 +208,12 @@ app.post('/adicionar-rg', (req, res) => {
             let SQL2 = "INSERT INTO ClienteRG (ClienteID, RGNumero, RGDataEmissao) VALUES ($1, $2, $3)"
 
             DB.query(SQL2, [clienteID, rg, rgDataEmissao], (err, result2) => {
-                if (err) {
+                if (result2.rowCount === 0) {
                     console.log(err)
-                    res.send(err)
+                    res.send({ erro: "Erro ao tentar adicionar um RG." })
                 } else {
                     console.log('deu bom')
-                    res.send({ msg: `RG adicionado ao cliente ${clienteNome} com sucesso.` })
+                    res.send({ msg: `RG adicionado ao cliente ${clienteNome} com sucesso.`, status: "OK" })
                 }
             })
         }
@@ -420,81 +423,96 @@ app.get("/listar-rgs/:ID", (req, res) => {
 //EDITS
 
 app.put('/editar-produto/:ID', (req, res) => {
-    const { ID } = req.params 
+    const { ID } = req.params
     const { produtoNome, produtoPreco } = req.body
 
     DB.query("UPDATE Produto SET ProdutoNome = $1, ProdutoPreco = $2 WHERE ProdutoID = $3", [produtoNome, produtoPreco, ID], (err, result) => {
         if (err) {
             console.log(err)
-            res.send({erro: "Erro ao editar Produto."})
+            res.send({ erro: "Erro ao editar Produto." })
         } else {
             console.log('atualizou Produto')
-            res.send({msg: "Produto editado com sucesso.", status: 'OK'})
+            res.send({ msg: "Produto editado com sucesso.", status: 'OK' })
         }
     })
 })
 
 app.put('/editar-servico/:ID', (req, res) => {
-    const { ID } = req.params 
+    const { ID } = req.params
     const { servicoNome, servicoPreco } = req.body
 
     DB.query("UPDATE Servico SET ServicoNome = $1, ServicoPreco = $2 WHERE ServicoID = $3", [servicoNome, servicoPreco, ID], (err, result) => {
         if (err) {
             console.log(err)
-            res.send({erro: "Erro ao editar Serviço."})
+            res.send({ erro: "Erro ao editar Serviço." })
         } else {
             console.log('atualizou serviço')
-            res.send({msg: "Serviço editado com sucesso.", status: 'OK'})
+            res.send({ msg: "Serviço editado com sucesso.", status: 'OK' })
         }
     })
 })
 
-app.put('/editar-pet/:ID', (req, res) => {
-    const { ID } = req.params 
+app.put('/editar-pet/:PetID/:ID', (req, res) => {
+    const { ID, PetID } = req.params
     const { petNome, petRaca, petTipo, petGenero } = req.body
 
-    DB.query("UPDATE Pets SET PetNome = $1, PetRaca = $2, PetTipo = $3, PetGenero = $4 WHERE ClienteID = $5", [petNome, petRaca, petTipo, petGenero, ID], (err, result) => {
+    DB.query("UPDATE Pets SET PetNome = $1, PetRaca = $2, PetTipo = $3, PetGenero = $4 WHERE PetID = $5 AND ClienteID = $6", [petNome, petRaca, petTipo, petGenero, PetID, ID], (err, result) => {
         if (err) {
             console.log(err)
-            res.send({erro: "Erro ao editar Pet."})
+            res.send({ erro: "Erro ao editar Pet." })
         } else {
             console.log('editado pet')
-            res.send({msg: "Pet editado com sucesso.", status: 'OK'})
+            res.send({ msg: "Pet editado com sucesso.", status: 'OK' })
         }
     })
 })
 
 app.put('/editar-telefone/:ID', (req, res) => {
-    const { ID } = req.params 
+    const { ID } = req.params
     const { telefoneDDD } = req.body
-    const { telefoneNumero } = req.body 
+    const { telefoneNumero } = req.body
 
     DB.query("UPDATE ClienteTelefone SET TelefoneDDD = $1, TelefoneNumero = $2 WHERE ClienteID = $3", [telefoneDDD, telefoneNumero, ID], (err, result) => {
         if (err) {
             console.log(err)
-            res.send({erro: "Erro ao editar Telefone."})
+            res.send({ erro: "Erro ao editar Telefone." })
         } else {
             console.log('atualizou telefone tbm')
-            res.send({msg: "Telefone editado com sucesso.", status: 'OK'})
+            res.send({ msg: "Telefone editado com sucesso.", status: 'OK' })
         }
     })
 })
 
 app.put('/editar-rg/:ID', (req, res) => {
-    const { ID } = req.params 
+    const { ID } = req.params
     const { rg, rgDataEmissao } = req.body
 
     DB.query("UPDATE ClienteRG SET RGNumero = $1, RGDataEmissao = $2 WHERE ClienteID = $3", [rg, rgDataEmissao, ID], (err, result) => {
         if (err) {
             console.log(err)
-            res.send({erro: "Erro ao editar RG."})
+            res.send({ erro: "Erro ao editar RG." })
         } else {
             console.log('atualizou RG')
-            res.send({msg: "RG editado com sucesso.", status: 'OK'})
+            res.send({ msg: "RG editado com sucesso.", status: 'OK' })
         }
     })
 })
-     
+
+app.put('/editar-cliente/:ID', (req, res) => {
+    const { ID } = req.params
+    const { nome, nomeSocial, cpf, cpfDataEmissao } = req.body
+
+    DB.query("UPDATE Cliente SET ClienteNome = $1, ClienteNomeSocial = $2, ClienteCPF = $3, ClienteCPFDataEmissao = $4 WHERE ClienteID = $5", [nome, nomeSocial, cpf, cpfDataEmissao, ID], (err, result) => {
+        if (err) {
+            console.log(err)
+            res.send({ erro: "Erro ao editar Cliente." })
+        } else {
+            console.log('atualizou RG')
+            res.send({ msg: "Cliente editado com sucesso.", status: 'OK' })
+        }
+    })
+})
+
 //DELETES
 
 app.delete("/excluirCliente/:cpf", (req, res) => {
@@ -556,6 +574,124 @@ app.delete("/excluirCliente/:cpf", (req, res) => {
             res.status(500).json({ error: "Erro ao excluir registros de produtosconsumidoscliente" });
         });
 });
+
+app.delete("/excluirProduto/:produtonome", (req, res) => {
+    const produtonome = req.params.produtonome;
+
+    // Excluir registros da tabela servicoconsumidoscliente
+    const deleteProdutoConsumidosQuery = `DELETE FROM produtosconsumidoscliente WHERE produtoid IN (SELECT produtoid FROM produto WHERE produtonome = $1)`;
+
+    DB.query(deleteProdutoConsumidosQuery, [produtonome])
+        .then(() => {
+            // Excluir o serviço da tabela servico
+            const deleteServicoQuery = `DELETE FROM produto WHERE produtonome = $1`;
+
+            DB.query(deleteServicoQuery, [produtonome])
+                .then(() => {
+                    res.status(200).json({ msg: "Produto excluído com sucesso." });
+                })
+                .catch((error) => {
+                    res.status(500).json({ error: "Erro ao excluir produto." });
+                });
+        })
+        .catch((error) => {
+            res.status(500).json({ error: "Erro ao excluir registros de produto." });
+        });
+});
+
+app.delete("/excluirServico/:serviconome", (req, res) => {
+    const serviconome = req.params.serviconome;
+
+    // Excluir registros da tabela servicoconsumidoscliente
+    const deleteServicoConsumidosQuery = `DELETE FROM servicoconsumidoscliente WHERE servicoid IN (SELECT servicoid FROM servico WHERE serviconome = $1)`;
+
+    DB.query(deleteServicoConsumidosQuery, [serviconome])
+        .then(() => {
+            // Excluir o serviço da tabela servico
+            const deleteServicoQuery = `DELETE FROM servico WHERE serviconome = $1`;
+
+            DB.query(deleteServicoQuery, [serviconome])
+                .then(() => {
+                    res.status(200).json({ msg: "Serviço excluído com sucesso." });
+                })
+                .catch((error) => {
+                    res.status(500).json({ error: "Erro ao excluir serviço." });
+                });
+        })
+        .catch((error) => {
+            res.status(500).json({ error: "Erro ao excluir registros de servicoconsumidoscliente." });
+        });
+});
+
+app.delete("/excluirTelefone/:telefoneID/:IDcliente", (req, res) => {
+    const telefoneID = req.params.telefoneID;
+    const IDcliente = req.params.IDcliente;
+
+    // Executar a consulta DELETE na tabela clientetelefone
+    const query = `DELETE FROM ClienteTelefone WHERE ClienteTelefoneID = $1 AND ClienteID = $2` 
+    //IN (SELECT clienteid FROM cliente WHERE clientecpf = $2)`;
+
+    DB.query(query, [telefoneID, IDcliente])
+        .then(() => {
+            res.status(200).json({ message: "Telefone excluído com sucesso" });
+        })
+        .catch((error) => {
+            res.status(500).json({ error: "Erro ao excluir telefone" });
+        });
+});
+
+app.delete("/excluirRG/:rgid/:id", (req, res) => {
+    const rgid = req.params.rgid;
+    const id = req.params.id;
+
+    // Executar a consulta DELETE na tabela clientetelefone
+    const query = `DELETE FROM clienterg WHERE RG_ID = $1 AND clienteid = $2`
+    // IN (SELECT clienteid FROM cliente WHERE clientecpf = $2);
+
+    DB.query(query, [rgid, id])
+        .then(() => {
+            res.status(200).json({ message: "RG excluído com sucesso" });
+        })
+        .catch((error) => {
+            res.status(500).json({ error: "Erro ao excluir RG" });
+        });
+});
+
+app.delete("/excluirPet/:idPet/:IDcliente", (req, res) => {
+    const idPet = req.params.idPet;
+    const IDcliente = req.params.IDcliente;
+
+    // Excluir registros da tabela produtosconsumidoscliente
+    const deleteProdutosQuery = `DELETE FROM produtosconsumidoscliente WHERE petid = $1 AND clienteid IN (SELECT clienteid FROM cliente WHERE clienteid = $2)`;
+
+    DB.query(deleteProdutosQuery, [idPet, IDcliente])
+        .then(() => {
+            // Excluir registros da tabela servicoconsumidoscliente
+            const deleteServicosQuery = `DELETE FROM servicoconsumidoscliente WHERE petid = $1 AND clienteid IN (SELECT clienteid FROM cliente WHERE clienteid = $2)`;
+
+            DB.query(deleteServicosQuery, [idPet, IDcliente])
+                .then(() => {
+                    // Excluir o pet da tabela pets
+                    const deletePetQuery = `DELETE FROM pets WHERE petid = $1 AND clienteid IN (SELECT clienteid FROM cliente WHERE clienteid = $2)`;
+
+                    DB.query(deletePetQuery, [idPet, IDcliente])
+                        .then(() => {
+                            res.status(200).json({ message: "Pet excluído com sucesso" });
+                        })
+                        .catch((error) => {
+                            res.status(500).json({ error: "Erro ao excluir pet" });
+                        });
+                })
+                .catch((error) => {
+                    res.status(500).json({ error: "Erro ao excluir registros de servicoconsumidoscliente" });
+                });
+        })
+        .catch((error) => {
+            res.status(500).json({ error: "Erro ao excluir registros de produtosconsumidoscliente" });
+        });
+});
+
+
 
 app.listen(3001, () => {
     console.log("Servidor rodando!")

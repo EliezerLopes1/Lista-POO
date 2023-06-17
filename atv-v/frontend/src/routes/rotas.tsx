@@ -18,6 +18,9 @@ import Dashboard from "../componentes/dashboard/dashboard";
 import ListaPets from "../componentes/listagens/listaPets";
 import ListaTelefones from "../componentes/listagens/listaTelefones";
 import ListaRGs from "../componentes/listagens/listaRGs";
+import EditarProduto from "../componentes/editores/editarProduto";
+import EditarServico from "../componentes/editores/editarServico";
+import EditarCliente from "../componentes/editores/editarCliente";
 
 export const Rotas = () => {
     return (
@@ -40,6 +43,9 @@ export const Rotas = () => {
             <Route path='/adicionar-telefone' element={<AdicionarTelefone tema="#00ced1"/>} />
             <Route path='/adicionar-pet' element={<AdicionarPet tema="#00ced1"/>} />
 
+            <Route path='/editar-cliente' element={<EditarCliente tema="#00ced1"/>} />
+            <Route path='/editar-produto' element={<EditarProduto tema="#00ced1"/>} />
+            <Route path='/editar-servico' element={<EditarServico tema="#00ced1"/>} />
             <Route path='/editar-rg' element={<EditarRG tema="#00ced1"/>} />
             <Route path='/editar-telefone' element={<EditarTelefone tema="#00ced1"/>} />
             <Route path='/editar-pet' element={<EditarPet tema="#00ced1"/>} />

@@ -58,20 +58,46 @@ function ListaCliente() {
       });
   }
 
-  const enviarDados1 = (clienteID: any) => {
+  const enviarDados1 = (clienteID: any, clienteCPF: any) => {
     localStorage.setItem('key_para_pet', clienteID)
+    localStorage.setItem('CPF', clienteCPF)
     navigate('/lista-pets')
   }
 
-  const enviarDados2 = (clienteID: any) => {
+  const enviarDados2 = (clienteID: any, clienteCPF: any) => {
     localStorage.setItem('key_para_telefone', clienteID)
+    localStorage.setItem('CPF', clienteCPF)
     navigate('/lista-telefones')
   }
 
-  const enviarDados3 = (clienteID: any) => {
+  const enviarDados3 = (clienteID: any, clienteCPF: any) => {
     localStorage.setItem('key_para_rg', clienteID)
+    localStorage.setItem('CPF', clienteCPF)
     navigate('/lista-rgs')
   }
+
+//   const enviarDadosCliente = (cliente: Clientes) => {
+//     const id = cliente.clienteid
+//     const nome = cliente.clientenome
+//     const nomeSocial = cliente.clientenomesocial
+//     const cpf = cliente.clientecpf
+//     const cpfDataEmissao = cliente.clientecpfdataemissao
+
+
+//     const data = {
+//         id: id,
+//         nome: nome,
+//         nomeSocial: nomeSocial,
+//         cpf: cpf,
+//         cpfDataEmissao: cpfDataEmissao
+//     }
+
+//     localStorage.setItem('cliente_id', data.id)
+//     localStorage.setItem('cliente_cpf', data.cpf)
+//     localStorage.setItem('dados_cliente', JSON.stringify(data))
+
+//     return data
+// }
 
   useEffect(() => {
     listarCliente();
@@ -104,9 +130,9 @@ function ListaCliente() {
 
 
           <div className="btn-group mr-3" role="group">
-            <button className="btn btn-success" onClick={() => enviarDados1(clienteSelecionado?.clienteid)}>Ver Pets</button>
-            <button className="btn btn-info" onClick={() => enviarDados2(clienteSelecionado?.clienteid)}>Ver Telefones</button>
-            <button className="btn btn-warning" onClick={() => enviarDados3(clienteSelecionado?.clienteid)}>Ver RGs</button>
+            <button className="btn btn-success" onClick={() => enviarDados1(clienteSelecionado?.clienteid, clienteSelecionado?.clientecpf)}>Ver Pets</button>
+            <button className="btn btn-info" onClick={() => enviarDados2(clienteSelecionado?.clienteid, clienteSelecionado?.clientecpf)}>Ver Telefones</button>
+            <button className="btn btn-warning" onClick={() => enviarDados3(clienteSelecionado?.clienteid, clienteSelecionado?.clientecpf)}>Ver RGs</button>
           </div>
 
 
@@ -114,6 +140,9 @@ function ListaCliente() {
         <Modal.Footer>
           <button className="btn btn-danger" onClick={() => excluirCliente(clienteSelecionado?.clientecpf)}>Excluir</button>
           <button className="btn btn-secondary" onClick={handleFecharModal}>Fechar</button>
+          <button className="btn btn-info" onClick={() => {
+            navigate('/editar-cliente')
+            }}>Editar</button>
         </Modal.Footer>
       </Modal>
     </div>

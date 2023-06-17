@@ -20,6 +20,7 @@ function ListaPets() {
     const navigate = useNavigate()
     
     const clienteID = localStorage.getItem('key_para_pet')
+    const PF = localStorage.getItem('CPF')
 
     const listarPets = () => {
         Axios.get(`http://localhost:3001/listar-pets/${clienteID}`)
@@ -50,6 +51,7 @@ function ListaPets() {
         }
 
         localStorage.setItem('cliente_id', data.IDcliente)
+        localStorage.setItem('pet_id', data.id)
         localStorage.setItem('dados_pet', JSON.stringify(data))
     }
 

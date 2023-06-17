@@ -10,17 +10,22 @@ function EditarRG(props: { tema: any; }) {
   const tema = props.tema;
   const navigate = useNavigate()
   
+  const [ID, setID] = useState("" as any)
   const [RG, setRG] = useState("" as any)
   const [rgData, setRgData] = useState("" as any)
+  const [teste2, setTeste2] = useState("" as any)
 
   const dadosJson = localStorage.getItem('dados_rg')
   const clienteID = localStorage.getItem('id_cliente')
-
+  const teste = localStorage.getItem('CPF')
+  
   useEffect(() => {
     if (dadosJson) {
       try {
         const dadosObj = JSON.parse(dadosJson)
 
+        setID(dadosObj.id)
+        setTeste2(dadosObj.IDcliente)
         setRG(dadosObj.numero)
         setRgData(dadosObj.dataemissao)
 
@@ -51,11 +56,25 @@ function EditarRG(props: { tema: any; }) {
     })
   }
 
+  const excluirRG = async (ID: any, clienteID: any) => {
+    await Axios.delete(`http://localhost:3001/excluirRG/${ID}/${clienteID}`)
+      .then((response) => {
+        console.log(response.data)
+
+        //Swal.fire({ title: "Produto excluído com sucesso.", confirmButtonColor: "#00ced1", icon: "success" })
+
+        MyToast.fire("RG excluído com sucesso.", "", "success")
+      }).catch((error) => {
+        console.log(error);
+        // Lida com o erro, se necessário
+      });
+  }
+    
   return (
     <div className="container-fluid">
       <form>
         <div className="margin-lista">
-          <h2 style={{ textAlign: "center" }}>Adicionar um RG</h2>
+          <h2 style={{ textAlign: "center" }}>Editar RG</h2>
         </div>
         <div className="margin-lista">
           <div className="input-group mb-3">
@@ -68,7 +87,10 @@ function EditarRG(props: { tema: any; }) {
           <div className="d-flex justify-content-center input-group mb-3">
             <button className="btn btn-secondary" type="button" onClick={() => navigate('/lista-rgs')}>Voltar</button>
             <button className="btn btn-outline-secondary" type="button" style={{ background: tema }} onClick={editar}>Editar</button>
-            <button className="btn btn-danger" type="button" onClick={editar}>Excluir</button>
+            <button className="btn btn-danger" type="button" onClick={() => {
+              excluirRG(ID, clienteID)
+              navigate('/lista-rgs')
+            }}>Excluir</button>
           </div>
         </div>
       </form>

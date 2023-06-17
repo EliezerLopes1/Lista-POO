@@ -42,7 +42,7 @@ function EditarServico(props: { tema: any; }) {
 
         MyToast.fire({
           icon: 'success',
-          title: response.data.msg
+          title: response.data.msg,
         })
       }
 
@@ -50,6 +50,20 @@ function EditarServico(props: { tema: any; }) {
         Swal.fire("ERRO", response.data.erro, "error")
       }
     })
+  }
+
+  const excluirServico = async (nome: any) => {
+    await Axios.delete(`http://localhost:3001/excluirServico/${nome}`)
+      .then((response) => {
+        console.log(response.data)
+
+        //Swal.fire({ title: "Produto excluído com sucesso.", confirmButtonColor: "#00ced1", icon: "success" })
+
+        MyToast.fire("Serviço excluído com sucesso.", "", "success")
+      }).catch((error) => {
+        console.log(error);
+        // Lida com o erro, se necessário
+      });
   }
 
   return (
@@ -72,7 +86,10 @@ function EditarServico(props: { tema: any; }) {
             <button className="btn btn-secondary" type="button" onClick={() => navigate('/lista-servicos')}>Voltar</button>
             <button className="btn btn-outline-secondary" type="button" style={{ background: tema }} onClick={editar}>Editar</button>
 
-            <button className="btn btn-danger" type="button" onClick={editar}>Excluir</button>
+            <button className="btn btn-danger" type="button" onClick={() => {
+              excluirServico(nome)
+              navigate('/lista-servicos')
+            }}>Excluir</button>
           </div>
 
 

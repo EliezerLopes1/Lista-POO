@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 function ListaRGs() {
     interface RG {
-        rgid: string,
+        rg_id: string,
         clienteid: string,
         rgnumero: string,
         rgdataemissao: string
@@ -16,6 +16,7 @@ function ListaRGs() {
     const navigate = useNavigate()
 
     const clienteID = localStorage.getItem('key_para_rg')
+    const clienteCPF = localStorage.getItem('CPF')
 
     const listarRG = () => {
         Axios.get(`http://localhost:3001/listar-rgs/${clienteID}`)
@@ -28,7 +29,7 @@ function ListaRGs() {
     };
 
     const enviarDadosRG = (rg: RG) => {
-        const id = rg.rgid
+        const id = rg.rg_id
         const IDcliente = rg.clienteid
         const numero = rg.rgnumero
         const dataemissao = rg.rgdataemissao
@@ -42,6 +43,7 @@ function ListaRGs() {
         }
 
         localStorage.setItem('id_cliente', data.IDcliente)
+        // localStorage.setItem('CPF', clienteCPF)
         localStorage.setItem('dados_rg', JSON.stringify(data))
     }
 
@@ -65,7 +67,7 @@ function ListaRGs() {
                         </thead>
                         <tbody className="table-group-divider">
                             {rgs.map((rg) => (
-                                <tr key={rg.rgid} className="item-hover" onClick={() => {
+                                <tr key={rg.rg_id} className="item-hover" onClick={() => {
                                     enviarDadosRG(rg)
                                     navigate('/editar-rg')
                                 }}>

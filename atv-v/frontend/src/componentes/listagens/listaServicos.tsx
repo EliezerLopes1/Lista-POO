@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import "../margin.css"
 import Axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
 function ListaServicos() {
   interface Servicos {
@@ -11,6 +12,7 @@ function ListaServicos() {
   }
 
   const [servicos, setServicos] = useState<Servicos[]>([] as any);
+  const navigate = useNavigate()
 
   const listarServicos = () => {
     Axios.get("http://localhost:3001/listar-servicos")
@@ -47,6 +49,7 @@ function ListaServicos() {
       <div className="list-group">
         <div className="margin-lista">
           <h2 style={{ textAlign: "center" }}>Lista de Serviços</h2>
+          <h5 style={{ textAlign: "center" }}>(Clique em uma linha da tabela para editar um Serviço)</h5>
           <table className="table table-hover table-bordered mt-5">
             <thead>
               <tr>
@@ -58,7 +61,7 @@ function ListaServicos() {
               {servicos.map((servico) => (
                 <tr key={servico.servicoid} className="item-hover" onClick={() => {
                   enviarDadosServico(servico)
-                  Navigate('/editar-servico')
+                  navigate('/editar-servico')
                 }}>
 
                   <td>{servico.serviconome}</td>

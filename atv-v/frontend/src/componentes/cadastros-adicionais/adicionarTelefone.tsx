@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../margin.css"
 import Axios from 'axios'
 import { MyToast } from "../../alertas/swal-mixin";
+import Swal from "sweetalert2";
 
 
 function AdicionarTelefone(props: { tema: any; }) {
@@ -25,13 +26,16 @@ function AdicionarTelefone(props: { tema: any; }) {
       telefoneDDD: DDD,
       telefoneNumero: numero
     }).then((response) => {
-      if (response.data.msg !== " ") {
+      if (response.data.status === "OK") {
         MyToast.fire({
           icon: 'success',
-          title: 'Sucesso',
-          html: response.data.msg,
+          title: response.data.msg
         })
         limparCampos()
+      }
+
+      if (response.data.status !== "OK") {
+        Swal.fire("ERRO", response.data.msg, "error")
       }
     })
   }
@@ -45,7 +49,7 @@ function AdicionarTelefone(props: { tema: any; }) {
         <div className="margin-lista">
           <h5 >Digite o CPF do cliente que deseja adicionar um Telefone</h5>
           <div className="input-group mb-3">
-            <input type="text" className="form-control" placeholder="CPF" aria-label="CPF" aria-describedby="basic-addon1" onChange={(e) => setCPF(e.target.value)} />
+            <input type="text" className="form-control" name="CPF" value={CPF} placeholder="CPF" aria-label="CPF" aria-describedby="basic-addon1" onChange={(e) => setCPF(e.target.value)} />
           </div>
 
           <br></br>
