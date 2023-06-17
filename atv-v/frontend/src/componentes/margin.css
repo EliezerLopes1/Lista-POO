@@ -3,3 +3,7 @@
 .margin-lista{
     margin-top: 20px;
 }
+
+.item-hover:hover {
+    background-color: #00ced1;
+}

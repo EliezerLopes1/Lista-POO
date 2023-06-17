@@ -8,7 +8,6 @@ import ListaServicos from "../componentes/listaServicos";
 import AdicionarRG from "../componentes/adicionarRG";
 import AdicionarTelefone from "../componentes/adicionarTelefone";
 import AdicionarPet from "../componentes/adicionarPet";
-import { Carrosel, Intro } from "../componentes/home";
 import Inicio from "../componentes/paginaInicial";
 import Dashboard from "../componentes/dashboard";
 
