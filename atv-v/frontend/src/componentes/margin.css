@@ -6,4 +6,5 @@
 
 .item-hover:hover {
     background-color: #00ced1;
+    cursor: pointer;
 }

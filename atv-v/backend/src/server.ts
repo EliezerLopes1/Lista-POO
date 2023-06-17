@@ -84,10 +84,10 @@ app.post('/editar-cliente/:ID', (req, res) => {
 
     const { nome, nomeSocial } = req.body
     const { cpf, cpfDataEmissao } = req.body
-    const { rg, rgDataEmissao } = req.body
+    // const { rg, rgDataEmissao } = req.body
 
-    const { telefoneDDD, telefoneNumero } = req.body
-    const { petNome, petTipo, petRaca, petGenero } = req.body
+    // const { telefoneDDD, telefoneNumero } = req.body
+    // const { petNome, petTipo, petRaca, petGenero } = req.body
 
     let SQL = "UPDATE cliente SET ClienteNome = $1, ClienteNomeSocial = $2, ClienteCPF = $3, ClienteCPFDataEmissao = $4) WHERE ClienteID = $5"
 
@@ -97,35 +97,35 @@ app.post('/editar-cliente/:ID', (req, res) => {
             res.send(err)
         } else {
 
-            let SQL2 = "UPDATE Pets SET PetNome = $1, PetRaca = $2, PetTipo = $3, PetGenero = $4) WHERE ClienteID = $5"
+            // let SQL2 = "UPDATE Pets SET PetNome = $1, PetRaca = $2, PetTipo = $3, PetGenero = $4) WHERE ClienteID = $5"
 
-            let SQL3 = "UPDATE ClienteTelefone SET TelefoneDDD = $1, TelefoneNumero = $2 WHERE ClienteID = $3"
+            // let SQL3 = "UPDATE ClienteTelefone SET TelefoneDDD = $1, TelefoneNumero = $2 WHERE ClienteID = $3"
 
-            let SQL4 = "UPDATE ClienteRG SET RGNumero = $1, RGDataEmissao = $2 WHERE ClienteID = $3"
+            // let SQL4 = "UPDATE ClienteRG SET RGNumero = $1, RGDataEmissao = $2 WHERE ClienteID = $3"
 
-            DB.query(SQL2, [petNome, petRaca, petTipo, petGenero, ID], (err, result) => {
-                if (err) {
-                    console.log(err)
-                } else {
-                    console.log('atualizou pet tbm')
-                }
-            })
+            // DB.query(SQL2, [petNome, petRaca, petTipo, petGenero, ID], (err, result) => {
+            //     if (err) {
+            //         console.log(err)
+            //     } else {
+            //         console.log('atualizou pet tbm')
+            //     }
+            // })
 
-            DB.query(SQL3, [telefoneDDD, telefoneNumero, ID], (err, result) => {
-                if (err) {
-                    console.log(err)
-                } else {
-                    console.log('atualizou telefone tbm')
-                }
-            })
+            // DB.query(SQL3, [telefoneDDD, telefoneNumero, ID], (err, result) => {
+            //     if (err) {
+            //         console.log(err)
+            //     } else {
+            //         console.log('atualizou telefone tbm')
+            //     }
+            // })
 
-            DB.query(SQL4, [rg, rgDataEmissao, ID], (err, result) => {
-                if (err) {
-                    console.log(err)
-                } else {
-                    console.log('atualizou RG tbm')
-                }
-            })
+            // DB.query(SQL4, [rg, rgDataEmissao, ID], (err, result) => {
+            //     if (err) {
+            //         console.log(err)
+            //     } else {
+            //         console.log('atualizou RG tbm')
+            //     }
+            // })
         
 
             res.send({ msg: "Cliente editado com sucesso." })
@@ -406,7 +406,47 @@ app.get("/listar-servicos", (req, res) => {
     })
 })
 
+app.get("/listar-pets/:ID", (req, res) => {
+    const { ID } = req.params
 
+    DB.query("SELECT * FROM Pets WHERE ClienteID = $1 ORDER BY PetNome", [ID], (err, result) => {
+        if (err) {
+            console.log(err)
+            res.send(err)
+        } else {
+            console.log('pegou os dados do pet')
+            res.send(result.rows)
+        }
+    })
+})
+
+app.get("/listar-telefones/:ID", (req, res) => {
+    const { ID } = req.params
+
+    DB.query("SELECT * FROM ClienteTelefone WHERE ClienteID = $1", [ID], (err, result) => {
+        if (err) {
+            console.log(err)
+            res.send(err)
+        } else {
+            console.log('pegou os dados do telefone')
+            res.send(result.rows)
+        }
+    })
+})
+
+app.get("/listar-rgs/:ID", (req, res) => {
+    const { ID } = req.params
+
+    DB.query("SELECT * FROM ClienteRG WHERE ClienteID = $1", [ID], (err, result) => {
+        if (err) {
+            console.log(err)
+            res.send(err)
+        } else {
+            console.log('pegou os dados do RG')
+            res.send(result.rows)
+        }
+    })
+})
 
 //DELETES
 

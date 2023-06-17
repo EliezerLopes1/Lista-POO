@@ -9,18 +9,29 @@ import ListaServicos from "../componentes/listagens/listaServicos";
 import AdicionarRG from "../componentes/cadastros-adicionais/adicionarRG";
 import AdicionarTelefone from "../componentes/cadastros-adicionais/adicionarTelefone";
 import AdicionarPet from "../componentes/cadastros-adicionais/adicionarPet";
+import EditarPet from "../componentes/editores/editarPet";
+import EditarRG from "../componentes/editores/editarRG";
+import EditarTelefone from "../componentes/editores/editarTelefone";
 import ConsumirProdutos from "../componentes/consumos/consumirProdutos";
 import ConsumirServicos from "../componentes/consumos/consumirServicos";
 import Dashboard from "../componentes/dashboard/dashboard";
+import ListaPets from "../componentes/listagens/listaPets";
+import ListaTelefones from "../componentes/listagens/listaTelefones";
+import ListaRGs from "../componentes/listagens/listaRGs";
 
 export const Rotas = () => {
     return (
         <BrowserRouter>
         <Routes>
             <Route path='/home' element={<Inicio />} />
-            <Route path='/lista-clientes' element={<ListaCliente tema="#00ced1"/>} />
-            <Route path='/lista-produtos' element={<ListaProdutos tema="#00ced1"/>} />
-            <Route path='/lista-servicos' element={<ListaServicos tema="#00ced1"/>} />
+
+            <Route path='/lista-clientes' element={<ListaCliente />} />
+            <Route path='/lista-produtos' element={<ListaProdutos />} />
+            <Route path='/lista-servicos' element={<ListaServicos />} />
+            <Route path='/lista-pets' element={<ListaPets />} />
+            <Route path='/lista-telefones' element={<ListaTelefones />} />
+            <Route path='/lista-rgs' element={<ListaRGs />} />
+
             <Route path='/cadastro-cliente' element={<FormularioCadastroCliente tema="#00ced1"/>} />
             <Route path='/cadastro-produto' element={<FormularioCadastroProduto tema="#00ced1"/>} />
             <Route path='/cadastro-servico' element={<FormularioCadastroServico tema="#00ced1"/>} />
@@ -29,6 +40,9 @@ export const Rotas = () => {
             <Route path='/adicionar-telefone' element={<AdicionarTelefone tema="#00ced1"/>} />
             <Route path='/adicionar-pet' element={<AdicionarPet tema="#00ced1"/>} />
 
+            <Route path='/editar-rg' element={<EditarRG tema="#00ced1"/>} />
+            <Route path='/editar-telefone' element={<EditarTelefone tema="#00ced1"/>} />
+            <Route path='/editar-pet' element={<EditarPet tema="#00ced1"/>} />
 
             <Route path="/consumir-produto" element={<ConsumirProdutos tema="#00ced1" />} />
             <Route path="/consumir-servico" element={<ConsumirServicos tema="#00ced1" />} />

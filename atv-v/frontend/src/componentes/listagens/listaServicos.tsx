@@ -3,9 +3,7 @@ import { useEffect, useState } from "react";
 import "../margin.css"
 import Axios from 'axios'
 
-function ListaServicos(props: { tema: any; }) {
-    let tema = props.tema;
-  
+function ListaServicos() {
     interface Servicos {
       servicoid: string,
       serviconome: string,

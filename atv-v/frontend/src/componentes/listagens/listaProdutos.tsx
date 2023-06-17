@@ -5,10 +5,7 @@ import Axios from 'axios'
 
 
 
-function ListaProdutos(props: { tema: any; }) {
-  let tema = props.tema;
-
-
+function ListaProdutos() {
   interface Produtos {
     produtoid: string,
     produtonome: string,
