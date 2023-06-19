@@ -4,7 +4,8 @@
 
 ## Professor Doutor Gerson da Penha Neto
 
- #OBS: Banco de Dados da lista 5 vai estar tanto no início do repositório, tanto quanto dentro da pasta da Lista 5.
+ #OBS: Banco de Dados da lista 5 dentro da pasta da Lista 5.
+ #OBS: Verifique no VSCode, o terminal do backend. Caso ele tenha crashado, é só dar ctrl C, clicar em SIM e dar o npm run dev novamente.
   
 </div>
 
