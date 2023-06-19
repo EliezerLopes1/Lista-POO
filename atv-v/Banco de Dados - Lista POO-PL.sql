@@ -13,7 +13,7 @@ CREATE TABLE ClienteRG (
 	RG_ID UUID PRIMARY KEY DEFAULT gen_random_uuid() not null,
 	ClienteID UUID not null,
 	RGNumero VARCHAR(20) null,
-    RGDataEmissao VARCHAR(30) null
+    RGDataEmissao VARCHAR(30) null,
 	FOREIGN KEY (ClienteID) REFERENCES Cliente(ClienteID)
 );
 
